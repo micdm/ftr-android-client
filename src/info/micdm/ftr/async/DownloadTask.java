@@ -1,5 +1,7 @@
 package info.micdm.ftr.async;
 
+import info.micdm.ftr.Theme;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -7,14 +9,15 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class DownloadTask extends AsyncTask<String, Void, ArrayList<String>> {
+public class DownloadTask extends AsyncTask<String, Void, ArrayList<Theme>> {
 
 	public interface Command {
-		public void callback(ArrayList<String> themes);
+		public void callback(ArrayList<Theme> themes);
 	}
 
 	protected Command _command;
@@ -22,23 +25,28 @@ public class DownloadTask extends AsyncTask<String, Void, ArrayList<String>> {
 	public DownloadTask(Command command) {
 		_command = command;
 	}
+	
+	protected ArrayList<Theme> _elementsToThemes(Elements elements) {
+		ArrayList<Theme> themes = new ArrayList<Theme>();
+		for (Element element : elements) {
+			Theme theme = new Theme(element.text()); 
+			themes.add(theme);
+		}
+		return themes;
+	}
 
-	public ArrayList<String> doInBackground(String... urls) {
+	public ArrayList<Theme> doInBackground(String... urls) {
 		try {
 			Connection connection = Jsoup.connect("http://forum.tomsk.ru/" + urls[0]);
 			Document doc = connection.get();
-			ArrayList<String> themes = new ArrayList<String>();
-			for (Element element : doc.select(".themes .tdw3 a")) {
-				themes.add(element.text());
-			}
-			return themes;
+			return _elementsToThemes(doc.select(".themes .tdw3 a"));
 		} catch (IOException e) {
 			Log.e(toString(), e.toString());
 			return null;
 		}
 	}
 
-	public void onPostExecute(ArrayList<String> themes) {
+	public void onPostExecute(ArrayList<Theme> themes) {
 		_command.callback(themes);
 	}
 }

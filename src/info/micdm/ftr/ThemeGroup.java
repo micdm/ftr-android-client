@@ -11,7 +11,7 @@ import android.util.Log;
  * @author Mic, 2011
  *
  */
-public class ThemeGroup {
+public class ThemeGroup implements Comparable<ThemeGroup> {
 
 	/**
 	 * Коллбэк после загрузки списка тем.
@@ -19,7 +19,7 @@ public class ThemeGroup {
 	 *
 	 */
 	public interface Command {
-		public void callback(ThemeGroup group);
+		public void callback(ArrayList<Theme> themes);
 	}
 	
 	/**
@@ -28,27 +28,26 @@ public class ThemeGroup {
 	protected Integer _id;
 	
 	/**
+	 * Заголовок группы.
+	 */
+	protected String _title;
+	
+	/**
 	 * Список тем в группе.
 	 */
 	protected ArrayList<Theme> _themes;
-	
-	/**
-	 * Загружает группу тем.
-	 */
-	public static void load(final Integer id, final Command command) {
-		DownloadTask task = new DownloadTask(new DownloadTask.Command() {
-			public void callback(ArrayList<Theme> themes) {
-				Log.d(toString(), themes.size() + " themes loaded");
-				ThemeGroup group = new ThemeGroup(id, themes);
-				command.callback(group);
-			}
-		});
-		task.execute("/forum/" + id);
+
+	public ThemeGroup(Integer id, String title) {
+		_id = id;
+		_title = title;
 	}
 	
-	public ThemeGroup(Integer id, ArrayList<Theme> themes) {
-		_id = id;
-		_themes = themes;
+	public String toString() {
+		return _title;
+	}
+	
+	public int compareTo(ThemeGroup another) {
+		return _title.compareTo(another.getTitle());
 	}
 	
 	/**
@@ -59,9 +58,27 @@ public class ThemeGroup {
 	}
 	
 	/**
+	 * Возвращает заголовок группы.
+	 */
+	public String getTitle() {
+		return _title;
+	}
+	
+	/**
 	 * Возвращает темы внутри группы.
 	 */
-	public ArrayList<Theme> getThemes() {
-		return _themes;
+	public void getThemes(final Command command) {
+		if (_themes == null) {
+			DownloadTask task = new DownloadTask(new DownloadTask.Command() {
+				public void callback(ArrayList<Theme> themes) {
+					Log.d(toString(), themes.size() + " themes loaded");
+					_themes = themes;
+					command.callback(themes);
+				}
+			});
+			task.execute("/forum/" + _id);
+		} else {
+			command.callback(_themes);
+		}
 	}
 }

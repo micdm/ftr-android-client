@@ -8,30 +8,32 @@ import android.util.Log;
 
 /**
  * Одна рубрика со списком тем.
+ * 
  * @author Mic, 2011
- *
+ * 
  */
 public class ThemeGroup implements Comparable<ThemeGroup> {
 
 	/**
 	 * Коллбэк после загрузки списка тем.
+	 * 
 	 * @author Mic, 2011
-	 *
+	 * 
 	 */
 	public interface Command {
 		public void callback(ArrayList<Theme> themes);
 	}
-	
+
 	/**
 	 * Идентификатор группы.
 	 */
 	protected Integer _id;
-	
+
 	/**
 	 * Заголовок группы.
 	 */
 	protected String _title;
-	
+
 	/**
 	 * Список тем в группе.
 	 */
@@ -41,29 +43,35 @@ public class ThemeGroup implements Comparable<ThemeGroup> {
 		_id = id;
 		_title = title;
 	}
-	
+
 	public String toString() {
 		return _title;
 	}
-	
+
 	public int compareTo(ThemeGroup another) {
+		if (_id.equals(0)) {
+			return -1;
+		}
+		if (another.getId().equals(0)) {
+			return 1;
+		}
 		return _title.compareTo(another.getTitle());
 	}
-	
+
 	/**
 	 * Возвращает идентификатор группы.
 	 */
 	public Integer getId() {
 		return _id;
 	}
-	
+
 	/**
 	 * Возвращает заголовок группы.
 	 */
 	public String getTitle() {
 		return _title;
 	}
-	
+
 	/**
 	 * Возвращает темы внутри группы.
 	 */

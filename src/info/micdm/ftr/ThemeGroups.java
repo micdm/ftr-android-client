@@ -38,6 +38,7 @@ public class ThemeGroups {
 	 */
 	protected void _createGroups() {
 		HashMap<Integer, String> groups = new HashMap<Integer, String>();
+		groups.put(0, "Горячее");
 		groups.put(4, "Компьютеры");
 		groups.put(5, "Матоязычные");
 		groups.put(8, "Культура");

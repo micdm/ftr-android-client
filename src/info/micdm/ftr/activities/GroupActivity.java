@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
-import info.micdm.ftr.ThemeGroup;
-import info.micdm.ftr.ThemeGroups;
+import info.micdm.ftr.Group;
+import info.micdm.ftr.Groups;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +32,9 @@ public class GroupActivity extends Activity {
 	/**
 	 * Отображает темы внутри группы.
 	 */
-	protected void _showThemes(ThemeGroup group) {
-		group.getThemes(new ThemeGroup.Command() {
+	protected void _showThemes(Group group) {
+		group.getThemes(new Group.Command() {
+			@Override
 			public void callback(ArrayList<Theme> themes) {
 				_onThemesAvailable(themes);
 			}
@@ -45,7 +46,7 @@ public class GroupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
 		Integer groupId = getIntent().getExtras().getInt("groupId");
-		ThemeGroup group = ThemeGroups.getInstance().getGroup(groupId);
+		Group group = Groups.getInstance().getGroup(groupId);
 		_showThemes(group);
 	}
 }

@@ -1,8 +1,8 @@
 package info.micdm.ftr.activities;
 
 import info.micdm.ftr.R;
-import info.micdm.ftr.ThemeGroup;
-import info.micdm.ftr.ThemeGroups;
+import info.micdm.ftr.Group;
+import info.micdm.ftr.Groups;
 
 import java.util.ArrayList;
 
@@ -26,12 +26,12 @@ public class GroupsActivity extends Activity {
 	 * Заполняет список групп.
 	 */
 	protected void _setData(ListView list) {
-		ArrayList<ThemeGroup> groups = ThemeGroups.getInstance().getAllGroups();
-		ArrayAdapter<ThemeGroup> adapter = new ArrayAdapter<ThemeGroup>(this, R.layout.list_item, groups);
+		ArrayList<Group> groups = Groups.getInstance().getAllGroups();
+		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(this, R.layout.list_item, groups);
 		list.setAdapter(adapter);
 	}
 	
-	protected void _onGroupSelected(ThemeGroup group) {
+	protected void _onGroupSelected(Group group) {
 		Log.d(toString(), "group \"" + group.getTitle() + "\" (" + group.getId() + ") selected");
 		Intent intent = new Intent(this, GroupActivity.class);
 		intent.putExtra("groupId", group.getId());
@@ -43,8 +43,9 @@ public class GroupsActivity extends Activity {
 	 */
 	protected void _listenForClick(final ListView list) {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				ThemeGroup group = (ThemeGroup)list.getItemAtPosition(position);
+				Group group = (Group)list.getItemAtPosition(position);
 				_onGroupSelected(group);
 			}
 		});

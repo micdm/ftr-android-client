@@ -32,6 +32,7 @@ public class IntroActivity extends Activity {
 	protected void _setGoTimer(Long delay) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
+			@Override
 			public void run() {
 				_onGoTimer();
 			}

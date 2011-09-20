@@ -10,24 +10,24 @@ import java.util.Map;
  * @author Mic, 2011
  *
  */
-public class ThemeGroups {
+public class Groups {
 
 	/**
 	 * Синглтон.
 	 */
-	protected static ThemeGroups _instance;
+	protected static Groups _instance;
 	
 	/**
 	 * Список рубрик.
 	 */
-	protected HashMap<Integer, ThemeGroup> _groups = new HashMap<Integer, ThemeGroup>();
+	protected HashMap<Integer, Group> _groups = new HashMap<Integer, Group>();
 	
 	/**
 	 * Синглтон.
 	 */
-	public static ThemeGroups getInstance() {
+	public static Groups getInstance() {
 		if (_instance == null) {
-			_instance = new ThemeGroups();
+			_instance = new Groups();
 			_instance._createGroups();
 		}
 		return _instance;
@@ -81,15 +81,15 @@ public class ThemeGroups {
 		groups.put(66, "Зоорынок");
 		groups.put(68, "Аптека");
 		for (Map.Entry<Integer, String> item : groups.entrySet()) {
-			_groups.put(item.getKey(), new ThemeGroup(item.getKey(), item.getValue()));
+			_groups.put(item.getKey(), new Group(item.getKey(), item.getValue()));
 		}
 	}
 	
 	/**
 	 * Возвращает все группы, отсортированные по алфавиту.
 	 */
-	public ArrayList<ThemeGroup> getAllGroups() {
-		ArrayList<ThemeGroup> groups = new ArrayList<ThemeGroup>(_groups.values());
+	public ArrayList<Group> getAllGroups() {
+		ArrayList<Group> groups = new ArrayList<Group>(_groups.values());
 		Collections.sort(groups);
 		return groups;
 	}
@@ -97,7 +97,7 @@ public class ThemeGroups {
 	/**
 	 * Возвращает группу по идентификатору.
 	 */
-	public ThemeGroup getGroup(Integer id) {
+	public Group getGroup(Integer id) {
 		if (_groups.containsKey(id)) {
 			return _groups.get(id);
 		}

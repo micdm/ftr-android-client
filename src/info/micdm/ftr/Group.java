@@ -12,7 +12,7 @@ import android.util.Log;
  * @author Mic, 2011
  * 
  */
-public class ThemeGroup implements Comparable<ThemeGroup> {
+public class Group implements Comparable<Group> {
 
 	/**
 	 * Коллбэк после загрузки списка тем.
@@ -39,16 +39,18 @@ public class ThemeGroup implements Comparable<ThemeGroup> {
 	 */
 	protected ArrayList<Theme> _themes;
 
-	public ThemeGroup(Integer id, String title) {
+	public Group(Integer id, String title) {
 		_id = id;
 		_title = title;
 	}
 
+	@Override
 	public String toString() {
 		return _title;
 	}
 
-	public int compareTo(ThemeGroup another) {
+	@Override
+	public int compareTo(Group another) {
 		if (_id.equals(0)) {
 			return -1;
 		}
@@ -78,6 +80,7 @@ public class ThemeGroup implements Comparable<ThemeGroup> {
 	public void getThemes(final Command command) {
 		if (_themes == null) {
 			DownloadTask task = new DownloadTask(new DownloadTask.Command() {
+				@Override
 				public void callback(ArrayList<Theme> themes) {
 					Log.d(toString(), themes.size() + " themes loaded");
 					_themes = themes;

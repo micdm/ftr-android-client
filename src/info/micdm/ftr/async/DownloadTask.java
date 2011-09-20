@@ -29,12 +29,13 @@ public class DownloadTask extends AsyncTask<String, Void, ArrayList<Theme>> {
 	protected ArrayList<Theme> _elementsToThemes(Elements elements) {
 		ArrayList<Theme> themes = new ArrayList<Theme>();
 		for (Element element : elements) {
-			Theme theme = new Theme(element.text()); 
+			Theme theme = new Theme(0, 0, element.text()); 
 			themes.add(theme);
 		}
 		return themes;
 	}
 
+	@Override
 	public ArrayList<Theme> doInBackground(String... urls) {
 		try {
 			Connection connection = Jsoup.connect("http://forum.tomsk.ru/" + urls[0]);
@@ -46,6 +47,7 @@ public class DownloadTask extends AsyncTask<String, Void, ArrayList<Theme>> {
 		}
 	}
 
+	@Override
 	public void onPostExecute(ArrayList<Theme> themes) {
 		_command.callback(themes);
 	}

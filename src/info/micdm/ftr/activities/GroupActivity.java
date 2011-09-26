@@ -1,11 +1,12 @@
 package info.micdm.ftr.activities;
 
-import java.util.ArrayList;
-
-import info.micdm.ftr.R;
-import info.micdm.ftr.Theme;
 import info.micdm.ftr.Group;
 import info.micdm.ftr.Groups;
+import info.micdm.ftr.R;
+import info.micdm.ftr.Theme;
+
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

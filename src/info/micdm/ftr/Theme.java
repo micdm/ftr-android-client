@@ -1,26 +1,44 @@
 package info.micdm.ftr;
 
-import info.micdm.ftr.async.DownloadThemeTask;
+import info.micdm.ftr.async.DownloadThemePageTask;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+/**
+ * Класс темы.
+ * @author Mic, 2011
+ *
+ */
 public class Theme {
 
-	public interface Command {
-		public void callback();
+	public interface OnPageLoadedCommand {
+		public void callback(ThemePage page);
 	}
 	
+	/**
+	 * Идентификатор группы, в которой находится тема.
+	 */
 	protected Integer _groupId;
 	
+	/**
+	 * Идентификатор темы.
+	 */
 	protected Integer _id;
 	
+	/**
+	 * Название темы.
+	 */
 	protected String _title;
-	
-	protected Boolean _isLoaded = false;
-	
+
+	/**
+	 * Количество страниц в теме.
+	 */
 	protected Integer _pageCount;
 	
-	protected ArrayList<Message> _messages;
+	/**
+	 * Загруженные страницы.
+	 */
+	protected HashMap<Integer, ThemePage> _pages = new HashMap<Integer, ThemePage>();
 	
 	public Theme(Integer groupId, Integer id, String title) {
 		_groupId = groupId;
@@ -28,45 +46,47 @@ public class Theme {
 		_title = title;
 	}
 
-	public Theme(Integer pageCount, ArrayList<Message> messages) {
-		_pageCount = pageCount;
-		_messages = messages;
-	}
-	
 	@Override
 	public String toString() {
 		return _title;
 	}
 	
+	/**
+	 * Возвращает идентификатор группы.
+	 */
 	public Integer getGroupId() {
 		return _groupId;
 	}
 	
+	/**
+	 * Возвращает идентификатор темы.
+	 */
 	public Integer getId() {
 		return _id;
 	}
 	
+	/**
+	 * Возвращает количество страниц.
+	 */
 	public Integer getPageCount() {
-		return _pageCount;
+		return 2;
+		//return _pageCount;
 	}
 	
-	public ArrayList<Message> getMessages() {
-		return _messages;
-	}
-	
-	public void load(final Command command) {
-		if (_isLoaded) {
-			command.callback();
+	/**
+	 * Загружает одну страницу и делает обратный вызов.
+	 */
+	public void loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoad) {
+		if (_pages.containsKey(pageNumber)) {
+			onLoad.callback(_pages.get(pageNumber));
 		} else {
-			DownloadThemeTask task = new DownloadThemeTask(this, new DownloadThemeTask.Command() {
-				public void callback(Theme theme) {
-					_pageCount = theme.getPageCount();
-					_messages = theme.getMessages();
-					_isLoaded = true;
-					command.callback();
+			DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber, new DownloadThemePageTask.Command() {
+				public void callback(ThemePage page) {
+					_pages.put(pageNumber, page);
+					onLoad.callback(page);
 				}
 			});
-			task.execute();
+			task.execute();			
 		}
 	}
 }

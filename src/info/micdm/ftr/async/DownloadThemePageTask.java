@@ -5,6 +5,8 @@ import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
@@ -56,13 +58,22 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	}
 	
 	/**
+	 * Возвращает тело сообщения.
+	 */
+	protected String _getMessageBody(String rawHtml) {
+		return rawHtml.replace("\n", "").replace("<br />", "\n");
+	}
+	
+	/**
 	 * Возвращает данные страницы (сообщения, ...).
 	 */
-	protected ThemePage _getData(Document doc) {
+	protected ThemePage _getData(String html) {
 		ArrayList<Message> messages = new ArrayList<Message>();
-		for (Element element : doc.select("div.text_box_2_mess")) {
-			Integer id = new Integer(element.attr("id").replace("message_", ""));
-			String body = element.text();
+		Pattern pattern = Pattern.compile("<div id=\"message_(\\d+)\" class=\"text_box_2_mess\">(.+?)</div>\\s+<a href=\"#ftop", Pattern.DOTALL);
+		Matcher matcher = pattern.matcher(html);
+		while (matcher.find()) {
+			Integer id = new Integer(matcher.group(1));
+			String body = _getMessageBody(matcher.group(2));
 			messages.add(0, new Message(id, "", body));
 		}
 		return new ThemePage(messages);
@@ -74,11 +85,7 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 			String url = _getUrl();
 			Connection connection = Jsoup.connect(url);
 			Response response = connection.execute();
-			String body = response.body();
-			Integer start = body.indexOf("<div class=\"paging\">");
-			Integer end = body.lastIndexOf("<div class=\"paging\">");
-			Document doc = Jsoup.parse(body.substring(start, end));
-			return _getData(doc);
+			return _getData(response.body());
 		} catch (Exception e) {
 			Log.e(toString(), e.toString());
 			return null;

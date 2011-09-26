@@ -29,6 +29,6 @@ public class Message {
 	}
 	
 	public String toString() {
-		return _id + ": " + _body;
+		return _id + "\n" + _body;
 	}
 }

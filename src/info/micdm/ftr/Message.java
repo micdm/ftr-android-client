@@ -2,6 +2,8 @@ package info.micdm.ftr;
 
 import java.util.Date;
 
+import android.text.format.DateUtils;
+
 /**
  * Отдельное сообщение.
  * @author Mic, 2011
@@ -37,7 +39,7 @@ public class Message {
 	}
 	
 	public String toString() {
-		// TODO выводить дату сообщения красиво, в соответствии с таймзоной и по-человечески
-		return "[" + _id + "] " + _author + ", " + _created.toString() + "\n" + _body;
+		String created = DateUtils.getRelativeTimeSpanString(_created.getTime()).toString();
+		return _author + ", " + created + "\n" + _body;
 	}
 }

@@ -69,7 +69,7 @@ public class Theme {
 	 * Возвращает количество страниц.
 	 */
 	public Integer getPageCount() {
-		return 2;
+		return 3;
 		//return _pageCount;
 	}
 	

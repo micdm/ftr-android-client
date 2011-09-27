@@ -4,15 +4,17 @@ import info.micdm.ftr.Message;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -43,6 +45,11 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	 */
 	protected Command _command;
 	
+	/**
+	 * Будет разбирать даты сообщений.
+	 */
+	protected SimpleDateFormat _dateFormat;
+	
 	public DownloadThemePageTask(Theme theme, Integer pageNumber, Command command) {
 		_theme = theme;
 		_pageNumber = pageNumber;
@@ -57,11 +64,35 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
 	}
 	
+	protected String _getPattern() {
+		String result = "";
+		result += "<div class=\"box_user\">([^|]+).+?";
+		result += "<(?:span class=\"name1\"|a.*?class=\"name\".*?)>([^<]+).+?";
+		result += "<div id=\"message_(\\d+)\" class=\"text_box_2_mess\">(.+?)</div>\\s+<a href=\"#ftop";
+		return result;
+	}
+	
+	/**
+	 * Возвращает дату сообщения.
+	 */
+	protected Date _getMessageDate(String rawText) {
+		if (_dateFormat == null) {
+			_dateFormat = new SimpleDateFormat("dd.MM.yyyy (kk:mm)");
+			_dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Novosibirsk"));
+		}
+		try {
+			return _dateFormat.parse(rawText.trim());
+		} catch (ParseException e) {
+			Log.w(toString(), "can not parse message date: " + rawText);
+			return null;
+		}
+	}
+	
 	/**
 	 * Возвращает тело сообщения.
 	 */
-	protected String _getMessageBody(String rawHtml) {
-		return rawHtml.replace("\n", "").replace("<br />", "\n");
+	protected String _getMessageBody(String rawText) {
+		return rawText.replace("\n", "").replace("<br />", "\n").trim();
 	}
 	
 	/**
@@ -69,12 +100,13 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	 */
 	protected ThemePage _getData(String html) {
 		ArrayList<Message> messages = new ArrayList<Message>();
-		Pattern pattern = Pattern.compile("<div id=\"message_(\\d+)\" class=\"text_box_2_mess\">(.+?)</div>\\s+<a href=\"#ftop", Pattern.DOTALL);
+		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(html);
 		while (matcher.find()) {
-			Integer id = new Integer(matcher.group(1));
-			String body = _getMessageBody(matcher.group(2));
-			messages.add(0, new Message(id, "", body));
+			Integer id = new Integer(matcher.group(3));
+			Date created = _getMessageDate(matcher.group(1));
+			String body = _getMessageBody(matcher.group(4));
+			messages.add(0, new Message(id, created, matcher.group(2).trim(), body));
 		}
 		return new ThemePage(messages);
 	}
@@ -82,6 +114,7 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	@Override
 	public ThemePage doInBackground(Void... voids) {
 		try {
+			Log.d(toString(), "loading page " + _pageNumber + " of theme " + _theme.getId());
 			String url = _getUrl();
 			Connection connection = Jsoup.connect(url);
 			Response response = connection.execute();

@@ -6,7 +6,6 @@ import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -15,8 +14,6 @@ public class ThemeActivity extends Activity {
 	protected ArrayAdapter<Message> _adapter;
 	
 	protected void _onPageLoaded(ThemePage page) {
-		Log.d(toString(), page.getMessages().get(0).toString());
-		Log.d(toString(), page.getMessages().get(page.getMessages().size() - 1).toString());
 		for (Message message : page.getMessages()) {
 			_adapter.add(message);
 		}
@@ -35,12 +32,6 @@ public class ThemeActivity extends Activity {
 		theme.loadPage(0, new Theme.OnPageLoadedCommand() {
 			public void callback(ThemePage page) {
 				_onPageLoaded(page);
-
-				theme.loadPage(1, new Theme.OnPageLoadedCommand() {
-					public void callback(ThemePage page) {
-						_onPageLoaded(page);
-					}
-				});
 			}
 		});
 	}

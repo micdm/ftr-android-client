@@ -37,6 +37,7 @@ public class Message {
 	}
 	
 	public String toString() {
+		// TODO выводить дату сообщения красиво, в соответствии с таймзоной и по-человечески
 		return "[" + _id + "] " + _author + ", " + _created.toString() + "\n" + _body;
 	}
 }

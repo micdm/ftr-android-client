@@ -20,56 +20,27 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 /**
- * Класс для фоновой загрузки одной страницы.
+ * Парсер сообщений.
  * @author Mic, 2011
  *
  */
-public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
-
-	public interface Command {
-		public void callback(ThemePage page);
-	}
-	
-	/**
-	 * Тема, из которой загружаем.
-	 */
-	protected Theme _theme;
-	
-	/**
-	 * Номер загружаемой страницы.
-	 */
-	protected Integer _pageNumber;
-	
-	/**
-	 * Будет выполнено, когда загрузка закончится.
-	 */
-	protected Command _command;
+class MessageParser {
 	
 	/**
 	 * Будет разбирать даты сообщений.
 	 */
 	protected SimpleDateFormat _dateFormat;
 	
-	public DownloadThemePageTask(Theme theme, Integer pageNumber, Command command) {
-		_theme = theme;
-		_pageNumber = pageNumber;
-		_command = command;
-	}
-	
 	/**
-	 * Возвращает адрес страницы.
+	 * Возвращает шаблон для поиска.
 	 */
-	protected String _getUrl() {
-		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
-		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
-	}
-	
 	protected String _getPattern() {
-		String result = "";
-		result += "<div class=\"box_user\">([^|]+).+?";
+		// Дата добавления:
+		String result = "<div class=\"box_user\">([^|]+).+?";
+		// Автор:
 		result += "<(?:span class=\"name1\"|a.*?class=\"name\".*?)>([^<]+).+?";
-		result += "<div id=\"message_(\\d+)\" class=\"text_box_2_mess\">(.+?)</div>\\s+<a href=\"#ftop";
-		return result;
+		// Заголовок и тело:
+		return result + "<div id=\"message_(\\d+)\" class=\"text_box_2_mess\">(.+?)</div>\\s+<a href=\"#ftop";
 	}
 	
 	/**
@@ -98,27 +69,71 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	/**
 	 * Возвращает данные страницы (сообщения, ...).
 	 */
-	protected ThemePage _getData(String html) {
+	protected ThemePage parse(String text) {
+		Log.d(toString(), "parsing page");
 		ArrayList<Message> messages = new ArrayList<Message>();
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
-		Matcher matcher = pattern.matcher(html);
+		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
 			Integer id = new Integer(matcher.group(3));
 			Date created = _getMessageDate(matcher.group(1));
 			String body = _getMessageBody(matcher.group(4));
 			messages.add(0, new Message(id, created, matcher.group(2).trim(), body));
 		}
+		Log.d(toString(), "page parsed");
 		return new ThemePage(messages);
 	}
+}
+
+/**
+ * Класс для фоновой загрузки одной страницы.
+ * @author Mic, 2011
+ * 
+ */
+public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
+
+	public interface Command {
+		public void callback(ThemePage page);
+	}
 	
+	/**
+	 * Тема, из которой загружаем.
+	 */
+	protected Theme _theme;
+	
+	/**
+	 * Номер загружаемой страницы.
+	 */
+	protected Integer _pageNumber;
+	
+	/**
+	 * Будет выполнено, когда загрузка закончится.
+	 */
+	protected Command _command;
+	
+	public DownloadThemePageTask(Theme theme, Integer pageNumber, Command command) {
+		_theme = theme;
+		_pageNumber = pageNumber;
+		_command = command;
+	}
+	
+	/**
+	 * Возвращает адрес страницы.
+	 */
+	protected String _getUrl() {
+		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
+		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
+	}
+
 	@Override
 	public ThemePage doInBackground(Void... voids) {
 		try {
 			Log.d(toString(), "loading page " + _pageNumber + " of theme " + _theme.getId());
 			String url = _getUrl();
+			// TODO качать страницы стандартным клиентом
 			Connection connection = Jsoup.connect(url);
 			Response response = connection.execute();
-			return _getData(response.body());
+			return new MessageParser().parse(response.body());
 		} catch (Exception e) {
 			Log.e(toString(), e.toString());
 			return null;

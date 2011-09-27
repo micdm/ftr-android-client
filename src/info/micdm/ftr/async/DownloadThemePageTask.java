@@ -12,10 +12,11 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jsoup.Connection;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.util.EntityUtils;
 
+import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -120,7 +121,7 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	/**
 	 * Возвращает адрес страницы.
 	 */
-	protected String _getUrl() {
+	protected String _getUri() {
 		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
 		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
 	}
@@ -129,17 +130,20 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	public ThemePage doInBackground(Void... voids) {
 		try {
 			Log.d(toString(), "loading page " + _pageNumber + " of theme " + _theme.getId());
-			String url = _getUrl();
-			// TODO качать страницы стандартным клиентом
-			Connection connection = Jsoup.connect(url);
-			Response response = connection.execute();
-			return new MessageParser().parse(response.body());
+			AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
+			HttpGet request = new HttpGet(_getUri());
+			BasicHttpResponse response = (BasicHttpResponse)client.execute(request);
+			String body = EntityUtils.toString(response.getEntity());
+			client.close();
+			Log.d(toString(), "page loaded");
+			return new MessageParser().parse(body);
 		} catch (Exception e) {
 			Log.e(toString(), e.toString());
 			return null;
 		}
 	}
 	
+	@Override
 	protected void onPostExecute(ThemePage page) {
 		_command.callback(page);
 	}

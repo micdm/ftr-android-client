@@ -46,8 +46,7 @@ public class GroupActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
-		//Integer groupId = getIntent().getExtras().getInt("groupId");
-		Integer groupId = 0;
+		Integer groupId = getIntent().getExtras().getInt("groupId");
 		Group group = Forum.getInstance().getGroup(groupId);
 		_showThemes(group);
 	}

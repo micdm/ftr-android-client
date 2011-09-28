@@ -23,7 +23,7 @@ class GroupParser {
 		// Дата последнего сообщения в теме:
 		String result = "<td class=\"tdw1\">([^<]+)</td>\\s+";
 		// Идентификатор группы, идентификатор темы, название темы:
-		result += "<td class=\"tdw3\"><a href=\"/forum/(\\d+)/(\\d+)/\"[^>]+>([^<]+).+?";
+		result += "<td class=\"tdw3\"><a href=\"/forum/(\\d+)/(\\d+)/\"[^>]*>([^<]+).+?";
 		// Автор темы:
 		return result + "<td class=\"tdw2\">(?:\\s+<a[^>]+>)?([^<]+)<";
 	}
@@ -58,11 +58,17 @@ public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Th
 	}
 
 	/**
+	 * Идентификатор группы, которую будем загружать.
+	 */
+	protected Integer _groupId;
+	
+	/**
 	 * Выполнится по окончании загрузки.
 	 */
 	protected OnLoadCommand _onLoad;
 
-	public DownloadGroupPageTask(OnLoadCommand onLoad) {
+	public DownloadGroupPageTask(Integer groupId, OnLoadCommand onLoad) {
+		_groupId = groupId;
 		_onLoad = onLoad;
 	}
 	
@@ -71,7 +77,7 @@ public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Th
 	 */
 	@Override
 	protected String _getUri() {
-		return "http://mic-dm.tom.ru/hot.html";
+		return "http://forum.tomsk.ru/forum/" + _groupId + "/";
 	}
 
 	@Override

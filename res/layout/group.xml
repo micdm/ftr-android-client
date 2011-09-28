@@ -4,9 +4,9 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	>
+	<TextView android:text="" android:layout_width="match_parent" android:id="@+id/groupTitle" android:layout_height="wrap_content"/>
 	<ListView
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
 	android:id="@+id/themes"
-	></ListView>
+	android:layout_height="wrap_content"/>
 </LinearLayout>

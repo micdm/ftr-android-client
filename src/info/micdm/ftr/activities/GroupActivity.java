@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Экран с темами внутри конкретной группы.
@@ -46,8 +47,13 @@ public class GroupActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
+
 		Integer groupId = getIntent().getExtras().getInt("groupId");
 		Group group = Forum.getInstance().getGroup(groupId);
+		
+		TextView title = (TextView)findViewById(R.id.groupTitle);
+		title.setText(group.getTitle());
+
 		_showThemes(group);
 	}
 }

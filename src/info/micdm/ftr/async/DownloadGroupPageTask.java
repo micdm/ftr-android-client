@@ -2,16 +2,11 @@ package info.micdm.ftr.async;
 
 import info.micdm.ftr.Theme;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.util.EntityUtils;
-
-import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
 import android.util.Log;
 
 /**
@@ -55,9 +50,8 @@ class GroupParser {
  * Фоновый загрузчик страницы со списком тем.
  * @author Mic, 2011
  * 
- * TODO объединить с загрузчиком сообщений
  */
-public class DownloadGroupPageTask extends AsyncTask<Void, Void, ArrayList<Theme>> {
+public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Theme>> {
 
 	public interface OnLoadCommand {
 		public void callback(ArrayList<Theme> themes);
@@ -75,6 +69,7 @@ public class DownloadGroupPageTask extends AsyncTask<Void, Void, ArrayList<Theme
 	/**
 	 * Возвращает адрес страницы.
 	 */
+	@Override
 	protected String _getUri() {
 		return "http://mic-dm.tom.ru/hot.html";
 	}
@@ -82,13 +77,9 @@ public class DownloadGroupPageTask extends AsyncTask<Void, Void, ArrayList<Theme
 	@Override
 	public ArrayList<Theme> doInBackground(Void... voids) {
 		try {
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
-			HttpGet request = new HttpGet(_getUri());
-			BasicHttpResponse response = (BasicHttpResponse)client.execute(request);
-			String body = EntityUtils.toString(response.getEntity(), "utf8");
-			client.close();
+			String body = _downloadPage();
 			return new GroupParser().parse(body);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			Log.e(toString(), e.toString());
 			return null;
 		}

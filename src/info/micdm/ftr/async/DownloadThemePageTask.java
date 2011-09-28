@@ -4,6 +4,7 @@ import info.micdm.ftr.Message;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +13,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.util.EntityUtils;
-
-import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
 import android.util.Log;
 
 /**
@@ -25,7 +20,7 @@ import android.util.Log;
  * @author Mic, 2011
  *
  */
-class MessageParser {
+class ThemeParser {
 	
 	/**
 	 * Будет разбирать даты сообщений.
@@ -91,9 +86,9 @@ class MessageParser {
  * @author Mic, 2011
  * 
  */
-public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
+public class DownloadThemePageTask extends DownloadTask<Void, Void, ThemePage> {
 
-	public interface Command {
+	public interface OnLoadCommand {
 		public void callback(ThemePage page);
 	}
 	
@@ -110,19 +105,21 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	/**
 	 * Будет выполнено, когда загрузка закончится.
 	 */
-	protected Command _command;
+	protected OnLoadCommand _onLoad;
 	
-	public DownloadThemePageTask(Theme theme, Integer pageNumber, Command command) {
+	public DownloadThemePageTask(Theme theme, Integer pageNumber, OnLoadCommand onLoad) {
 		_theme = theme;
 		_pageNumber = pageNumber;
-		_command = command;
+		_onLoad = onLoad;
 	}
 	
 	/**
 	 * Возвращает адрес страницы.
 	 */
+	@Override
 	protected String _getUri() {
-		return "http://mic-dm.tom.ru/theme.html";
+		return "http://forum.tomsk.ru/forum/12/1293428/?p=100";
+		//return "http://mic-dm.tom.ru/theme.html";
 //		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
 //		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
 	}
@@ -130,15 +127,9 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	@Override
 	public ThemePage doInBackground(Void... voids) {
 		try {
-			Log.d(toString(), "loading page " + _pageNumber + " of theme " + _theme.getId());
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
-			HttpGet request = new HttpGet(_getUri());
-			BasicHttpResponse response = (BasicHttpResponse)client.execute(request);
-			String body = EntityUtils.toString(response.getEntity(), "utf8");
-			client.close();
-			Log.d(toString(), "page loaded");
-			return new MessageParser().parse(body);
-		} catch (Exception e) {
+			String body = _downloadPage();
+			return new ThemeParser().parse(body);
+		} catch (IOException e) {
 			Log.e(toString(), e.toString());
 			return null;
 		}
@@ -146,6 +137,6 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	
 	@Override
 	protected void onPostExecute(ThemePage page) {
-		_command.callback(page);
+		_onLoad.callback(page);
 	}
 }

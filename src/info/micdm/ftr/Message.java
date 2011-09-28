@@ -39,7 +39,6 @@ public class Message {
 	}
 	
 	public String toString() {
-		// TODO для старых дат показывать именно дату
 		String created = DateUtils.getRelativeTimeSpanString(_created.getTime()).toString();
 		return _author + ", " + created + "\n" + _body;
 	}

@@ -1,7 +1,7 @@
 package info.micdm.ftr.activities;
 
-import info.micdm.ftr.Group;
 import info.micdm.ftr.Forum;
+import info.micdm.ftr.Group;
 import info.micdm.ftr.R;
 
 import java.util.ArrayList;

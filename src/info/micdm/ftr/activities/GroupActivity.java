@@ -1,7 +1,7 @@
 package info.micdm.ftr.activities;
 
-import info.micdm.ftr.Group;
 import info.micdm.ftr.Forum;
+import info.micdm.ftr.Group;
 import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
 
@@ -46,7 +46,8 @@ public class GroupActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
-		Integer groupId = getIntent().getExtras().getInt("groupId");
+		//Integer groupId = getIntent().getExtras().getInt("groupId");
+		Integer groupId = 0;
 		Group group = Forum.getInstance().getGroup(groupId);
 		_showThemes(group);
 	}

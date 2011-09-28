@@ -1,6 +1,6 @@
 package info.micdm.ftr;
 
-import info.micdm.ftr.async.DownloadTask;
+import info.micdm.ftr.async.DownloadGroupPageTask;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class Group implements Comparable<Group> {
 	 */
 	public void getThemes(final Command command) {
 		if (_themes == null) {
-			DownloadTask task = new DownloadTask(new DownloadTask.Command() {
+			DownloadGroupPageTask task = new DownloadGroupPageTask(new DownloadGroupPageTask.OnLoadCommand() {
 				@Override
 				public void callback(ArrayList<Theme> themes) {
 					Log.d(toString(), themes.size() + " themes loaded");
@@ -87,7 +87,7 @@ public class Group implements Comparable<Group> {
 					command.callback(themes);
 				}
 			});
-			task.execute("/forum/" + _id);
+			task.execute();
 		} else {
 			command.callback(_themes);
 		}

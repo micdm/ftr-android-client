@@ -64,7 +64,7 @@ class MessageParser {
 	 * Возвращает тело сообщения.
 	 */
 	protected String _getMessageBody(String rawText) {
-		return rawText.replace("\n", "").replace("<br />", "\n").trim();
+		return rawText.replace("\n", "").replaceAll("<br />|<br>", "\n").trim();
 	}
 	
 	/**
@@ -122,8 +122,9 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 	 * Возвращает адрес страницы.
 	 */
 	protected String _getUri() {
-		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
-		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
+		return "http://mic-dm.tom.ru/theme.html";
+//		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
+//		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
 	}
 
 	@Override
@@ -133,7 +134,7 @@ public class DownloadThemePageTask extends AsyncTask<Void, Void, ThemePage> {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
 			HttpGet request = new HttpGet(_getUri());
 			BasicHttpResponse response = (BasicHttpResponse)client.execute(request);
-			String body = EntityUtils.toString(response.getEntity());
+			String body = EntityUtils.toString(response.getEntity(), "utf8");
 			client.close();
 			Log.d(toString(), "page loaded");
 			return new MessageParser().parse(body);

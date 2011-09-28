@@ -9,6 +9,13 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+ * 
+ * @author Mic, 2011
+ *
+ * TODO наследовать от ListActivity
+ * TODO сделать красивые элементы списка
+ */
 public class ThemeActivity extends Activity {
 
 	protected ArrayAdapter<Message> _adapter;

@@ -11,6 +11,12 @@ import org.w3c.dom.Document;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * 
+ * @author Mic, 2011
+ * 
+ * TODO распарсить список тем регулярками
+ */
 public class DownloadTask extends AsyncTask<String, Void, ArrayList<Theme>> {
 
 	public interface Command {

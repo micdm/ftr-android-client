@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Список рубрик.
+ * Форум со списком рубрик.
  * @author Mic, 2011
- *
+ * 
  */
-public class Groups {
+public class Forum {
 
 	/**
 	 * Синглтон.
 	 */
-	protected static Groups _instance;
+	protected static Forum _instance;
 	
 	/**
 	 * Список рубрик.
@@ -25,9 +25,9 @@ public class Groups {
 	/**
 	 * Синглтон.
 	 */
-	public static Groups getInstance() {
+	public static Forum getInstance() {
 		if (_instance == null) {
-			_instance = new Groups();
+			_instance = new Forum();
 			_instance._createGroups();
 		}
 		return _instance;
@@ -80,7 +80,7 @@ public class Groups {
 		groups.put(65, "Барахолка женская");
 		groups.put(66, "Зоорынок");
 		groups.put(68, "Аптека");
-		for (Map.Entry<Integer, String> item : groups.entrySet()) {
+		for (Map.Entry<Integer, String> item: groups.entrySet()) {
 			_groups.put(item.getKey(), new Group(item.getKey(), item.getValue()));
 		}
 	}

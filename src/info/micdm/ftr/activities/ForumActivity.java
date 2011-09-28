@@ -1,7 +1,7 @@
 package info.micdm.ftr.activities;
 
 import info.micdm.ftr.Group;
-import info.micdm.ftr.Groups;
+import info.micdm.ftr.Forum;
 import info.micdm.ftr.R;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ import android.widget.ListView;
  * @author Mic, 2011
  *
  */
-public class GroupsActivity extends Activity {
+public class ForumActivity extends Activity {
 
 	/**
 	 * Заполняет список групп.
 	 */
 	protected void _setData(ListView list) {
-		ArrayList<Group> groups = Groups.getInstance().getAllGroups();
+		ArrayList<Group> groups = Forum.getInstance().getAllGroups();
 		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(this, R.layout.list_item, groups);
 		list.setAdapter(adapter);
 	}

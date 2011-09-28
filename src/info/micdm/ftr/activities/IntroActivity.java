@@ -22,7 +22,7 @@ public class IntroActivity extends Activity {
 	 */
 	protected void _onGoTimer() {
 		Log.d(toString(), "coming to groups activity");
-		Intent intent = new Intent(this, GroupsActivity.class);
+		Intent intent = new Intent(this, ForumActivity.class);
 		startActivity(intent);
 	}
 	

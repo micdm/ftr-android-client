@@ -2,7 +2,10 @@ package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadThemePageTask;
 
+import java.util.Date;
 import java.util.HashMap;
+
+import android.text.format.DateUtils;
 
 /**
  * Класс темы.
@@ -26,6 +29,16 @@ public class Theme {
 	protected Integer _id;
 	
 	/**
+	 * Время последнего обновления темы.
+	 */
+	protected Date _updated;
+	
+	/**
+	 * Автор темы.
+	 */
+	protected String _author;
+	
+	/**
 	 * Название темы.
 	 */
 	protected String _title;
@@ -40,15 +53,18 @@ public class Theme {
 	 */
 	protected HashMap<Integer, ThemePage> _pages = new HashMap<Integer, ThemePage>();
 	
-	public Theme(Integer groupId, Integer id, String title) {
+	public Theme(Integer groupId, Integer id, Date updated, String author, String title) {
 		_groupId = groupId;
 		_id = id;
+		_updated = updated;
+		_author = author;
 		_title = title;
 	}
 
 	@Override
 	public String toString() {
-		return _title;
+		String updated = DateUtils.getRelativeTimeSpanString(_updated.getTime()).toString();
+		return _author + ", " + updated + "\n" + _title;
 	}
 	
 	/**

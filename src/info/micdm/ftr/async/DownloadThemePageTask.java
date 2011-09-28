@@ -3,13 +3,11 @@ package info.micdm.ftr.async;
 import info.micdm.ftr.Message;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
+import info.micdm.ftr.utils.DateParser;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,12 +19,7 @@ import android.util.Log;
  *
  */
 class ThemeParser {
-	
-	/**
-	 * Будет разбирать даты сообщений.
-	 */
-	protected SimpleDateFormat _dateFormat;
-	
+
 	/**
 	 * Возвращает шаблон для поиска.
 	 */
@@ -40,22 +33,6 @@ class ThemeParser {
 	}
 	
 	/**
-	 * Возвращает дату сообщения.
-	 */
-	protected Date _getMessageDate(String rawText) {
-		if (_dateFormat == null) {
-			_dateFormat = new SimpleDateFormat("dd.MM.yyyy (kk:mm)");
-			_dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Novosibirsk"));
-		}
-		try {
-			return _dateFormat.parse(rawText.trim());
-		} catch (ParseException e) {
-			Log.w(toString(), "can not parse message date: " + rawText);
-			return null;
-		}
-	}
-	
-	/**
 	 * Возвращает тело сообщения.
 	 */
 	protected String _getMessageBody(String rawText) {
@@ -66,17 +43,17 @@ class ThemeParser {
 	 * Возвращает данные страницы (сообщения, ...).
 	 */
 	protected ThemePage parse(String text) {
-		Log.d(toString(), "parsing page");
+		Log.d(toString(), "parsing theme page");
 		ArrayList<Message> messages = new ArrayList<Message>();
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
 			Integer id = new Integer(matcher.group(3));
-			Date created = _getMessageDate(matcher.group(1));
+			Date created = DateParser.parse(matcher.group(1).trim(), DateParser.Type.MESSAGE);
 			String body = _getMessageBody(matcher.group(4));
 			messages.add(0, new Message(id, created, matcher.group(2).trim(), body));
 		}
-		Log.d(toString(), "page parsed");
+		Log.d(toString(), "theme page parsed");
 		return new ThemePage(messages);
 	}
 }

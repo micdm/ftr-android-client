@@ -2,7 +2,6 @@ package info.micdm.ftr.activities;
 
 import info.micdm.ftr.Message;
 import info.micdm.ftr.R;
-import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import android.app.Activity;
 import android.os.Bundle;
@@ -35,11 +34,11 @@ public class ThemeActivity extends Activity {
 		_adapter = new ArrayAdapter<Message>(this, R.layout.list_item);
 		list.setAdapter(_adapter);
 		
-		final Theme theme = new Theme(4, 1323287, "");
-		theme.loadPage(0, new Theme.OnPageLoadedCommand() {
-			public void callback(ThemePage page) {
-				_onPageLoaded(page);
-			}
-		});
+//		final Theme theme = new Theme(4, 1323287, "");
+//		theme.loadPage(0, new Theme.OnPageLoadedCommand() {
+//			public void callback(ThemePage page) {
+//				_onPageLoaded(page);
+//			}
+//		});
 	}
 }

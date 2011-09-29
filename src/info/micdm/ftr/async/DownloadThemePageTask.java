@@ -4,6 +4,7 @@ import info.micdm.ftr.Message;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import info.micdm.ftr.utils.DateParser;
+import info.micdm.ftr.utils.HtmlParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import android.util.Log;
  * @author Mic, 2011
  *
  */
-class ThemeParser {
+class ThemeParser extends HtmlParser {
 
 	/**
 	 * Возвращает шаблон для поиска.
@@ -51,7 +52,7 @@ class ThemeParser {
 			Integer id = new Integer(matcher.group(3));
 			Date created = DateParser.parse(matcher.group(1).trim(), DateParser.Type.MESSAGE);
 			String body = _getMessageBody(matcher.group(4));
-			messages.add(0, new Message(id, created, matcher.group(2).trim(), body));
+			messages.add(0, new Message(id, _getCorrectDate(created), matcher.group(2).trim(), body));
 		}
 		Log.d(toString(), "theme page parsed");
 		return new ThemePage(messages);

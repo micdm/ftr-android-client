@@ -2,6 +2,7 @@ package info.micdm.ftr.async;
 
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.utils.DateParser;
+import info.micdm.ftr.utils.HtmlParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import android.util.Log;
  * @author Mic, 2011
  *
  */
-class GroupParser {
+class GroupParser extends HtmlParser {
 	
 	/**
 	 * Возвращает регулярное выражение для разбора.
@@ -31,6 +32,18 @@ class GroupParser {
 	}
 	
 	/**
+	 * Создает тему.
+	 */
+	protected Theme _createTheme(Matcher matcher) {
+		Integer groupId = new Integer(matcher.group(2));
+		Integer id = new Integer(matcher.group(3));
+		Date updated = DateParser.parse(matcher.group(1), DateParser.Type.THEME);
+		String author = matcher.group(5).trim();
+		String title = matcher.group(4).trim();
+		return new Theme(groupId, id, _getCorrectDate(updated), author, title);
+	}
+	
+	/**
 	 * Парсит текст в список тем.
 	 */
 	public ArrayList<Theme> parse(String text) {
@@ -39,12 +52,7 @@ class GroupParser {
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
-			Integer groupId = new Integer(matcher.group(2));
-			Integer id = new Integer(matcher.group(3));
-			Date updated = DateParser.parse(matcher.group(1), DateParser.Type.THEME);
-			String author = matcher.group(5).trim();
-			String title = matcher.group(4).trim();
-			themes.add(new Theme(groupId, id, updated, author, title));
+			themes.add(_createTheme(matcher));
 		}
 		Log.d(toString(), "group page parsed");
 		return themes;

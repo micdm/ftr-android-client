@@ -8,6 +8,7 @@ import info.micdm.ftr.Theme;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,11 @@ import android.widget.TextView;
 public class GroupActivity extends Activity {
 
 	/**
+	 * Диалог про загрузку списка тем.
+	 */
+	protected ProgressDialog _loadingThemesDialog = null;
+	
+	/**
 	 * Вызывается, когда будет доступен список тем.
 	 */
 	protected void _onThemesAvailable(ArrayList<Theme> themes) {
@@ -35,10 +41,14 @@ public class GroupActivity extends Activity {
 	 * Отображает темы внутри группы.
 	 */
 	protected void _showThemes(Group group) {
+		_loadingThemesDialog = ProgressDialog.show(this, "", "Загружается список тем");
 		group.getThemes(new Group.Command() {
 			@Override
 			public void callback(ArrayList<Theme> themes) {
 				_onThemesAvailable(themes);
+				if (_loadingThemesDialog != null) {
+					_loadingThemesDialog.dismiss();
+				}
 			}
 		});
 	}
@@ -55,5 +65,14 @@ public class GroupActivity extends Activity {
 		title.setText(group.getTitle());
 
 		_showThemes(group);
+	}
+	
+	@Override
+	public void onDestroy() {
+		if (_loadingThemesDialog.isShowing()) {
+			_loadingThemesDialog.dismiss();
+			_loadingThemesDialog = null;
+		}
+		super.onDestroy();
 	}
 }

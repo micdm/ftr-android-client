@@ -34,13 +34,13 @@ class GroupParser extends HtmlParser {
 	/**
 	 * Создает тему.
 	 */
-	protected Theme _createTheme(Matcher matcher) {
+	protected Theme _getTheme(Matcher matcher) {
 		Integer groupId = new Integer(matcher.group(2));
 		Integer id = new Integer(matcher.group(3));
-		Date updated = DateParser.parse(matcher.group(1), DateParser.Type.THEME);
-		String author = matcher.group(5).trim();
-		String title = matcher.group(4).trim();
-		return new Theme(groupId, id, _getCorrectDate(updated), author, title);
+		Date updated = _getCorrectDate(DateParser.parse(matcher.group(1), DateParser.Type.THEME));
+		String author = _normalizeString(matcher.group(5));
+		String title = _normalizeString(matcher.group(4));
+		return new Theme(groupId, id, updated, author, title);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ class GroupParser extends HtmlParser {
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
-			themes.add(_createTheme(matcher));
+			themes.add(_getTheme(matcher));
 		}
 		Log.d(toString(), "group page parsed");
 		return themes;

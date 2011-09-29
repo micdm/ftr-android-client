@@ -34,10 +34,14 @@ class ThemeParser extends HtmlParser {
 	}
 	
 	/**
-	 * Возвращает тело сообщения.
+	 * Создает сообщение.
 	 */
-	protected String _getMessageBody(String rawText) {
-		return rawText.replace("\n", "").replaceAll("<br />|<br>", "\n").trim();
+	protected Message _getMessage(Matcher matcher) {
+		Integer id = new Integer(matcher.group(3));
+		Date created = _getCorrectDate(DateParser.parse(matcher.group(1).trim(), DateParser.Type.MESSAGE));
+		String author = _normalizeString(matcher.group(2));
+		String body = _normalizeString(matcher.group(4).replace("\n", "").replaceAll("<br />|<br>", "\n"));
+		return new Message(id, created, author, body);
 	}
 	
 	/**
@@ -49,10 +53,7 @@ class ThemeParser extends HtmlParser {
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
-			Integer id = new Integer(matcher.group(3));
-			Date created = DateParser.parse(matcher.group(1).trim(), DateParser.Type.MESSAGE);
-			String body = _getMessageBody(matcher.group(4));
-			messages.add(0, new Message(id, _getCorrectDate(created), matcher.group(2).trim(), body));
+			messages.add(0, _getMessage(matcher));
 		}
 		Log.d(toString(), "theme page parsed");
 		return new ThemePage(messages);

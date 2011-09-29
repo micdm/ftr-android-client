@@ -58,23 +58,13 @@ class GroupParser {
  */
 public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Theme>> {
 
-	public interface OnLoadCommand {
-		public void callback(ArrayList<Theme> themes);
-	}
-
 	/**
 	 * Идентификатор группы, которую будем загружать.
 	 */
 	protected Integer _groupId;
-	
-	/**
-	 * Выполнится по окончании загрузки.
-	 */
-	protected OnLoadCommand _onLoad;
 
-	public DownloadGroupPageTask(Integer groupId, OnLoadCommand onLoad) {
+	public DownloadGroupPageTask(Integer groupId) {
 		_groupId = groupId;
-		_onLoad = onLoad;
 	}
 	
 	/**
@@ -98,10 +88,5 @@ public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Th
 			Log.e(toString(), e.toString());
 			return null;
 		}
-	}
-
-	@Override
-	public void onPostExecute(ArrayList<Theme> themes) {
-		_onLoad.callback(themes);
 	}
 }

@@ -96,12 +96,13 @@ public class Theme {
 		if (_pages.containsKey(pageNumber)) {
 			onLoad.callback(_pages.get(pageNumber));
 		} else {
-			DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber, new DownloadThemePageTask.OnLoadCommand() {
-				public void callback(ThemePage page) {
+			DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
+				@Override
+				public void onPostExecute(ThemePage page) {
 					_pages.put(pageNumber, page);
 					onLoad.callback(page);
 				}
-			});
+			};
 			task.execute();
 		}
 	}

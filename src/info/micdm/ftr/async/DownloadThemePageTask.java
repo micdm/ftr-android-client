@@ -65,10 +65,6 @@ class ThemeParser {
  */
 public class DownloadThemePageTask extends DownloadTask<Void, Void, ThemePage> {
 
-	public interface OnLoadCommand {
-		public void callback(ThemePage page);
-	}
-	
 	/**
 	 * Тема, из которой загружаем.
 	 */
@@ -79,15 +75,9 @@ public class DownloadThemePageTask extends DownloadTask<Void, Void, ThemePage> {
 	 */
 	protected Integer _pageNumber;
 	
-	/**
-	 * Будет выполнено, когда загрузка закончится.
-	 */
-	protected OnLoadCommand _onLoad;
-	
-	public DownloadThemePageTask(Theme theme, Integer pageNumber, OnLoadCommand onLoad) {
+	public DownloadThemePageTask(Theme theme, Integer pageNumber) {
 		_theme = theme;
 		_pageNumber = pageNumber;
-		_onLoad = onLoad;
 	}
 	
 	/**
@@ -110,10 +100,5 @@ public class DownloadThemePageTask extends DownloadTask<Void, Void, ThemePage> {
 			Log.e(toString(), e.toString());
 			return null;
 		}
-	}
-	
-	@Override
-	protected void onPostExecute(ThemePage page) {
-		_onLoad.callback(page);
 	}
 }

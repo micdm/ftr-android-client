@@ -9,6 +9,7 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 /**
  * Экран со списком сообщений.
@@ -41,16 +42,16 @@ public class ThemeActivity extends ListActivity {
 		Integer groupId = extras.getInt("groupId");
 		Integer themeId = extras.getInt("themeId");
 		
-		try {
-			Theme theme = Forum.INSTANCE.getGroup(groupId).getTheme(themeId);
-			theme.loadPage(0, new Theme.OnPageLoadedCommand() {
-				@Override
-				public void callback(ThemePage page) {
-					_onPageLoaded(page);
-				}
-			});
-		} catch (Exception e) {
-			Log.e(toString(), e.toString(), e);
-		}
+		Theme theme = Forum.INSTANCE.getGroup(groupId).getTheme(themeId);
+		
+		TextView title = (TextView)findViewById(R.id.themeTitle);
+		title.setText(theme.getTitle());
+		
+		theme.loadPage(0, new Theme.OnPageLoadedCommand() {
+			@Override
+			public void callback(ThemePage page) {
+				_onPageLoaded(page);
+			}
+		});
 	}
 }

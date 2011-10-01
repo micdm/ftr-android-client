@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 /**
  * Класс темы.
@@ -16,6 +17,10 @@ public class Theme {
 
 	public interface OnPageLoadedCommand {
 		public void callback(ThemePage page);
+	}
+	
+	interface OnPageCountLoadedCommand {
+		public void callback(Integer pageCount);
 	}
 	
 	/**
@@ -92,25 +97,60 @@ public class Theme {
 	 * Возвращает количество страниц.
 	 */
 	public Integer getPageCount() {
-		return 3;
-		//return _pageCount;
+		return _pageCount;
+	}
+	
+	/**
+	 * Загружает количество страниц.
+	 */
+	protected void _loadPageCount(final OnPageCountLoadedCommand onLoaded) {
+		Log.d(toString(), "loading page count");
+		DownloadThemePageTask task = new DownloadThemePageTask(this, 0) {
+			@Override
+			public void onPostExecute(Result result) {
+				_pageCount = result.getPageCount();
+				Log.d(toString(), "page count loaded: " + _pageCount);
+				if (_pageCount == 1) {
+					_pages.put(0, result.getPage());
+				}
+				onLoaded.callback(_pageCount);
+			}
+		};
+		task.execute();
+	}
+	
+	/**
+	 * Загружает страницу с указанным номером.
+	 */
+	protected void _loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
+		Log.d(toString(), "loading page #" + pageNumber);
+		DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
+			@Override
+			public void onPostExecute(Result result) {
+				Log.d(toString(), "page #" + pageNumber + " loaded");
+				onLoaded.callback(result.getPage());
+			}
+		};
+		task.execute();
 	}
 	
 	/**
 	 * Загружает одну страницу и делает обратный вызов.
 	 */
-	public void loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoad) {
-		if (_pages.containsKey(pageNumber)) {
-			onLoad.callback(_pages.get(pageNumber));
-		} else {
-			DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
+	public void loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
+		if (_pageCount == null) {
+			_loadPageCount(new OnPageCountLoadedCommand() {
 				@Override
-				public void onPostExecute(Result result) {
-					_pages.put(pageNumber, result.getPage());
-					onLoad.callback(result.getPage());
+				public void callback(Integer pageCount) {
+					if (pageCount == 1) {
+						onLoaded.callback(_pages.get(0));
+					} else {
+						_loadPage(pageNumber, onLoaded);
+					}
 				}
-			};
-			task.execute();
+			});
+		} else {
+			_loadPage(pageNumber, onLoaded);
 		}
 	}
 }

@@ -7,8 +7,7 @@ import info.micdm.ftr.utils.HtmlParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.MatchResult;
 
 import android.util.Log;
 
@@ -19,9 +18,9 @@ import android.util.Log;
  */
 class GroupParser extends HtmlParser {
 	
-	/**
-	 * Возвращает регулярное выражение для разбора.
-	 */
+	protected ArrayList<Theme> _themes = new ArrayList<Theme>();
+	
+	@Override
 	protected String _getPattern() {
 		// Дата последнего сообщения в теме:
 		String result = "<td class=\"tdw1\">([^<]+)</td>\\s+";
@@ -31,31 +30,23 @@ class GroupParser extends HtmlParser {
 		return result + "<td class=\"tdw2\">(?:\\s+<a[^>]+>)?([^<]+)";
 	}
 	
-	/**
-	 * Создает тему.
-	 */
-	protected Theme _getTheme(Matcher matcher) {
-		Integer groupId = new Integer(matcher.group(2));
-		Integer id = new Integer(matcher.group(3));
-		Date updated = _getCorrectDate(DateParser.parse(matcher.group(1), DateParser.Type.THEME));
-		String author = _normalizeString(matcher.group(5));
-		String title = _normalizeString(matcher.group(4));
-		return new Theme(groupId, id, updated, author, title);
+	@Override
+	protected Boolean _createItem(MatchResult match) {
+		Integer groupId = new Integer(match.group(2));
+		Integer id = new Integer(match.group(3));
+		Date updated = _getCorrectDate(DateParser.parse(match.group(1), DateParser.Type.THEME));
+		String author = _normalizeString(match.group(5));
+		String title = _normalizeString(match.group(4));
+		_themes.add(new Theme(groupId, id, updated, author, title));
+		return true;
 	}
 	
 	/**
 	 * Парсит текст в список тем.
 	 */
 	public ArrayList<Theme> parse(String text) {
-		Log.d(toString(), "parsing group page");
-		ArrayList<Theme> themes = new ArrayList<Theme>();
-		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
-		Matcher matcher = pattern.matcher(text);
-		while (matcher.find()) {
-			themes.add(_getTheme(matcher));
-		}
-		Log.d(toString(), "group page parsed");
-		return themes;
+		_findMatches(text);
+		return _themes;
 	}
 }
 

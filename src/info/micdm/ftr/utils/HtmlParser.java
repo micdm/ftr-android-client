@@ -5,8 +5,6 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import info.micdm.ftr.utils.Log;
-
 /**
  * Как бы парсер HTML-страниц.
  * @author Mic, 2011

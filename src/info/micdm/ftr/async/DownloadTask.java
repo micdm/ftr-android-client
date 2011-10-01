@@ -1,5 +1,7 @@
 package info.micdm.ftr.async;
 
+import info.micdm.ftr.utils.Log;
+
 import java.io.IOException;
 
 import org.apache.http.client.methods.HttpGet;
@@ -8,7 +10,6 @@ import org.apache.http.util.EntityUtils;
 
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
-import info.micdm.ftr.utils.Log;
 
 /**
  * Абстрактный загрузчик страниц.

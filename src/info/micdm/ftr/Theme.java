@@ -1,12 +1,12 @@
 package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadThemePageTask;
+import info.micdm.ftr.utils.Log;
 
 import java.util.Date;
 import java.util.HashMap;
 
 import android.text.format.DateUtils;
-import info.micdm.ftr.utils.Log;
 
 /**
  * Класс темы.

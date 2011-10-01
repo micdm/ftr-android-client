@@ -5,13 +5,12 @@ import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import info.micdm.ftr.utils.DateParser;
 import info.micdm.ftr.utils.HtmlParser;
+import info.micdm.ftr.utils.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.MatchResult;
-
-import info.micdm.ftr.utils.Log;
 
 /**
  * Парсер информации о количестве страниц.
@@ -73,7 +72,7 @@ class MessageParser extends HtmlParser {
 		Date created = _getCorrectDate(DateParser.parse(match.group(1).trim(), DateParser.Type.MESSAGE));
 		String author = _normalizeString(match.group(2));
 		String body = _normalizeString(match.group(4).replace("\n", "").replaceAll("<br />|<br>", "\n"));
-		_messages.add(new Message(id, created, author, body));
+		_messages.add(0, new Message(id, created, author, body));
 		return true;
 	}
 	

@@ -1,6 +1,7 @@
 package info.micdm.ftr.activities;
 
 import info.micdm.ftr.R;
+import info.micdm.ftr.utils.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,7 +9,6 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import info.micdm.ftr.utils.Log;
 
 /**
  * Стартовый экран.

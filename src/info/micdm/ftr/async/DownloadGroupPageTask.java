@@ -3,13 +3,12 @@ package info.micdm.ftr.async;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.utils.DateParser;
 import info.micdm.ftr.utils.HtmlParser;
+import info.micdm.ftr.utils.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.MatchResult;
-
-import info.micdm.ftr.utils.Log;
 
 /**
  * Парсер страницы со списком тем.

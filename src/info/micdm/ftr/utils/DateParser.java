@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import info.micdm.ftr.utils.Log;
-
 /**
  * Парсер дат.
  * @author Mic, 2011

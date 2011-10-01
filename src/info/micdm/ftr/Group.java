@@ -1,10 +1,9 @@
 package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadGroupPageTask;
+import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
-
-import info.micdm.ftr.utils.Log;
 
 /**
  * Одна рубрика со списком тем.

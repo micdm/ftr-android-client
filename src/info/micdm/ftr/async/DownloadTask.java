@@ -8,7 +8,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Абстрактный загрузчик страниц.
@@ -27,13 +27,13 @@ public abstract class DownloadTask<Params, Progress, Result> extends AsyncTask<P
 	 */
 	protected String _downloadPage() throws IOException {
 		String uri = "http://www3.forum.tomsk.ru/forum" + _getUrn();
-		Log.d(toString(), "downloading page " + uri);
+		Log.debug("downloading page " + uri);
 		AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
 		HttpGet request = new HttpGet(uri);
 		BasicHttpResponse response = (BasicHttpResponse)client.execute(request);
 		String body = EntityUtils.toString(response.getEntity(), "utf8");
 		client.close();
-		Log.d(toString(), "page loaded");
+		Log.debug("page loaded");
 		return body;
 	}
 }

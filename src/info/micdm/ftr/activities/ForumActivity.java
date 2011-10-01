@@ -2,13 +2,13 @@ package info.micdm.ftr.activities;
 
 import info.micdm.ftr.Forum;
 import info.micdm.ftr.Group;
+import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +33,7 @@ public class ForumActivity extends ListActivity {
 	 * Выполняется, когда пользователь выбрал определенную группу.
 	 */
 	protected void _onGroupSelected(Group group) {
-		Log.d(toString(), "group \"" + group.getTitle() + "\" (" + group.getId() + ") selected");
+		Log.debug("group \"" + group.getTitle() + "\" (" + group.getId() + ") selected");
 		Intent intent = new Intent(this, GroupActivity.class);
 		intent.putExtra("groupId", group.getId());
 		startActivity(intent);

@@ -4,6 +4,7 @@ import info.micdm.ftr.Forum;
 import info.micdm.ftr.Group;
 import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
+import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,6 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +36,7 @@ public class GroupActivity extends ListActivity {
 	 */
 	protected void _onThemesAvailable(ArrayList<Theme> themes) {
 		// TODO: не пересоздавать адаптер
-		Log.d(toString(), themes.size() + " themes available");
+		Log.debug(themes.size() + " themes available");
 		ArrayAdapter<Theme> adapter = new ArrayAdapter<Theme>(this, R.layout.list_item, themes);
 		getListView().setAdapter(adapter);
 	}
@@ -74,7 +74,7 @@ public class GroupActivity extends ListActivity {
 	 * Вызывается при выборе темы.
 	 */
 	protected void _onThemeSelected(Theme theme) {
-		Log.d(toString(), "theme \"" + theme.getTitle() + "\" (" + theme.getId() + ") selected");
+		Log.debug("theme \"" + theme.getTitle() + "\" (" + theme.getId() + ") selected");
 		Intent intent = new Intent(this, ThemeActivity.class);
 		intent.putExtra("groupId", theme.getGroupId());
 		intent.putExtra("themeId", theme.getId());

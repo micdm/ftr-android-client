@@ -5,7 +5,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Как бы парсер HTML-страниц.
@@ -27,7 +27,6 @@ public abstract class HtmlParser {
 	 */
 	protected String _normalizeString(String source) {
 		String result = source.trim();
-		//result = 
 		// TODO: удалять тэги
 		result = result.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&");
 		return result;
@@ -48,7 +47,7 @@ public abstract class HtmlParser {
 	 * Сопоставляет шаблон и строку.
 	 */
 	protected void _findMatches(String text) {
-		Log.d(toString(), "parsing text of length " + text.length());
+		Log.debug("parsing text of length " + text.length());
 		Pattern pattern = Pattern.compile(_getPattern(), Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
@@ -56,6 +55,6 @@ public abstract class HtmlParser {
 				break;
 			}
 		}
-		Log.d(toString(), "text parsed");
+		Log.debug("text parsed");
 	}
 }

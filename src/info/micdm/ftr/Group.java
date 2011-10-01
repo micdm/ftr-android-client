@@ -4,7 +4,7 @@ import info.micdm.ftr.async.DownloadGroupPageTask;
 
 import java.util.ArrayList;
 
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Одна рубрика со списком тем.
@@ -94,7 +94,7 @@ public class Group implements Comparable<Group> {
 		DownloadGroupPageTask task = new DownloadGroupPageTask(_id) {
 			@Override
 			public void onPostExecute(ArrayList<Theme> themes) {
-				Log.d(toString(), themes.size() + " themes loaded");
+				Log.debug(themes.size() + " themes loaded");
 				for (Theme theme: themes) {
 					Group group = Forum.INSTANCE.getGroup(theme.getGroupId());
 					group.addTheme(theme);

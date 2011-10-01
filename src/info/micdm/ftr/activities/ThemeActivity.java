@@ -7,7 +7,6 @@ import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 

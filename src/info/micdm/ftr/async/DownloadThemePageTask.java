@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.MatchResult;
 
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Парсер информации о количестве страниц.
@@ -166,7 +166,7 @@ public class DownloadThemePageTask extends DownloadTask<Void, Void, DownloadThem
 			ThemePage page = new MessageParser().parse(body);
 			return new Result(pageCount, page);
 		} catch (IOException e) {
-			Log.e(toString(), "error during loading", e);
+			Log.error("error during loading theme", e);
 			return null;
 		}
 	}

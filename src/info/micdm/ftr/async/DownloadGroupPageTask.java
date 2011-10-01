@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.MatchResult;
 
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Парсер страницы со списком тем.
@@ -83,7 +83,7 @@ public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Th
 			String body = _downloadPage();
 			return new GroupParser().parse(body);
 		} catch (IOException e) {
-			Log.e(toString(), e.toString());
+			Log.error("error during loading group", e);
 			return null;
 		}
 	}

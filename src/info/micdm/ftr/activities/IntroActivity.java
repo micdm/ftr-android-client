@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Стартовый экран.
@@ -21,7 +21,7 @@ public class IntroActivity extends Activity {
 	 * Переходит в основное окно.
 	 */
 	protected void _onGoTimer() {
-		Log.d(toString(), "coming to groups activity");
+		Log.debug("coming to groups activity");
 		Intent intent = new Intent(this, ForumActivity.class);
 		startActivity(intent);
 	}

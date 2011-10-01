@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Парсер дат.
@@ -58,7 +58,7 @@ public class DateParser {
 			}
 			return result;
 		} catch (ParseException e) {
-			Log.d("FTR", "can't parse date " + text);
+			Log.debug("can't parse date " + text);
 			return null;
 		}
 	}

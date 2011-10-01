@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.text.format.DateUtils;
-import android.util.Log;
+import info.micdm.ftr.utils.Log;
 
 /**
  * Класс темы.
@@ -104,12 +104,12 @@ public class Theme {
 	 * Загружает количество страниц.
 	 */
 	protected void _loadPageCount(final OnPageCountLoadedCommand onLoaded) {
-		Log.d(toString(), "loading page count");
+		Log.debug("loading page count");
 		DownloadThemePageTask task = new DownloadThemePageTask(this, 0) {
 			@Override
 			public void onPostExecute(Result result) {
 				_pageCount = result.getPageCount();
-				Log.d(toString(), "page count loaded: " + _pageCount);
+				Log.debug("page count loaded: " + _pageCount);
 				if (_pageCount == 1) {
 					_pages.put(0, result.getPage());
 				}
@@ -123,11 +123,11 @@ public class Theme {
 	 * Загружает страницу с указанным номером.
 	 */
 	protected void _loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
-		Log.d(toString(), "loading page #" + pageNumber);
+		Log.debug("loading page #" + pageNumber);
 		DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
 			@Override
 			public void onPostExecute(Result result) {
-				Log.d(toString(), "page #" + pageNumber + " loaded");
+				Log.debug("page #" + pageNumber + " loaded");
 				onLoaded.callback(result.getPage());
 			}
 		};

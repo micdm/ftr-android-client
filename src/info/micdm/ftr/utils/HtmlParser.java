@@ -2,8 +2,6 @@ package info.micdm.ftr.utils;
 
 import java.util.Date;
 
-import android.text.Html;
-
 /**
  * Как бы парсер HTML-страниц.
  * @author Mic, 2011

@@ -41,7 +41,7 @@ public class Theme {
 	/**
 	 * Название темы.
 	 */
-	protected String _title;
+	private String _title;
 
 	/**
 	 * Количество страниц в теме.
@@ -64,7 +64,7 @@ public class Theme {
 	@Override
 	public String toString() {
 		String updated = DateUtils.getRelativeTimeSpanString(_updated.getTime()).toString();
-		return _author + ", " + updated + "\n" + _title;
+		return _author + ", " + updated + "\n" + getTitle();
 	}
 	
 	/**
@@ -79,6 +79,13 @@ public class Theme {
 	 */
 	public Integer getId() {
 		return _id;
+	}
+	
+	/**
+	 * Возвращает заголовок темы.
+	 */
+	public String getTitle() {
+		return _title;
 	}
 	
 	/**

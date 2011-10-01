@@ -37,7 +37,7 @@ public class Group implements Comparable<Group> {
 	/**
 	 * Список тем в группе.
 	 */
-	protected ArrayList<Theme> _themes;
+	protected ArrayList<Theme> _themes = new ArrayList<Theme>();
 
 	public Group(Integer id, String title) {
 		_id = id;
@@ -73,6 +73,19 @@ public class Group implements Comparable<Group> {
 	public String getTitle() {
 		return _title;
 	}
+	
+	/**
+	 * Возвращает тему по идентификатору.
+	 */
+	public Theme getTheme(Integer id) {
+		// TODO: использовать HashMap?
+		for (Theme theme: _themes) {
+			if (id.equals(theme.getId())) {
+				return theme;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Возвращает темы внутри группы.
@@ -82,10 +95,17 @@ public class Group implements Comparable<Group> {
 			@Override
 			public void onPostExecute(ArrayList<Theme> themes) {
 				Log.d(toString(), themes.size() + " themes loaded");
-				_themes = themes;
+				for (Theme theme: themes) {
+					Group group = Forum.getInstance().getGroup(theme.getGroupId());
+					group.addTheme(theme);
+				}
 				command.callback(themes);
 			}
 		};
 		task.execute();
+	}
+	
+	public void addTheme(Theme theme) {
+		_themes.add(theme);
 	}
 }

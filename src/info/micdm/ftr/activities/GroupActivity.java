@@ -7,12 +7,13 @@ import info.micdm.ftr.Theme;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -34,6 +35,7 @@ public class GroupActivity extends ListActivity {
 	 * Вызывается, когда будет доступен список тем.
 	 */
 	protected void _onThemesAvailable(ArrayList<Theme> themes) {
+		// TODO: не пересоздавать адаптер
 		Log.d(toString(), themes.size() + " themes available");
 		ArrayAdapter<Theme> adapter = new ArrayAdapter<Theme>(this, R.layout.list_item, themes);
 		getListView().setAdapter(adapter);
@@ -55,17 +57,10 @@ public class GroupActivity extends ListActivity {
 		});
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.group);
-		// Узнаем, что за группу надо показать:
-		Integer groupId = getIntent().getExtras().getInt("groupId");
-		final Group group = Forum.getInstance().getGroup(groupId);
-		// Заполняем заголовок:
-		TextView title = (TextView)findViewById(R.id.groupTitle);
-		title.setText(group.getTitle());
-		// При клике по "Обновить" перезагружаем список:
+	/**
+	 * Слушает клик по кнопке "Обновить".
+	 */
+	protected void _listenForReload(final Group group) {
 		ImageButton reload = (ImageButton)findViewById(R.id.reloadGroup);
 		reload.setOnClickListener(new ImageButton.OnClickListener() {
 			@Override
@@ -73,6 +68,45 @@ public class GroupActivity extends ListActivity {
 				_showThemes(group);
 			}
 		});
+	}
+	
+	/**
+	 * Вызывается при выборе темы.
+	 */
+	protected void _onThemeSelected(Theme theme) {
+		Log.d(toString(), "theme \"" + theme.getTitle() + "\" (" + theme.getId() + ") selected");
+		Intent intent = new Intent(this, ThemeActivity.class);
+		intent.putExtra("groupId", theme.getGroupId());
+		intent.putExtra("themeId", theme.getId());
+		startActivity(intent);
+	}
+	
+	/**
+	 * Слушает клик по элементу списка, чтобы перейти в соответствующую тему.
+	 */
+	protected void _listenForThemeSelected() {
+		getListView().setOnItemClickListener(new ListView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				Theme theme = (Theme)adapter.getItemAtPosition(position);
+				_onThemeSelected(theme);
+			}
+		});
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.group);
+
+		Integer groupId = getIntent().getExtras().getInt("groupId");
+		Group group = Forum.getInstance().getGroup(groupId);
+
+		TextView title = (TextView)findViewById(R.id.groupTitle);
+		title.setText(group.getTitle());
+
+		_listenForReload(group);
+		_listenForThemeSelected();
 		_showThemes(group);
 	}
 	

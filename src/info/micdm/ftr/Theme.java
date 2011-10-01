@@ -105,9 +105,9 @@ public class Theme {
 		} else {
 			DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
 				@Override
-				public void onPostExecute(Result result) {
-					_pages.put(pageNumber, result.getPage());
-					onLoad.callback(result.getPage());
+				public void onPostExecute(ThemePage page) {
+					_pages.put(pageNumber, page);
+					onLoad.callback(page);
 				}
 			};
 			task.execute();

@@ -79,12 +79,11 @@ public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Th
 	 * Возвращает адрес страницы.
 	 */
 	@Override
-	protected String _getUri() {
-		String result = "http://forum.tomsk.ru/forum/";
-		if (_groupId != 0) {
-			result += _groupId;
+	protected String _getUrn() {
+		if (_groupId == 0) {
+			return "/";
 		}
-		return result;
+		return "/" + _groupId + "/";
 	}
 
 	@Override

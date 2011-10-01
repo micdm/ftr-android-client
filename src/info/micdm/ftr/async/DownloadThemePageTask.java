@@ -86,11 +86,8 @@ public class DownloadThemePageTask extends DownloadTask<Void, Void, ThemePage> {
 	 * Возвращает адрес страницы.
 	 */
 	@Override
-	protected String _getUri() {
-		return "http://forum.tomsk.ru/forum/12/1293428/?p=100";
-		//return "http://mic-dm.tom.ru/theme.html";
-//		String url = "http://forum.tomsk.ru/forum/" + _theme.getGroupId() + "/" + _theme.getId();
-//		return url + "/?p=" + (_theme.getPageCount() - _pageNumber);
+	protected String _getUrn() {
+		return "/12/1293428/?p=100";
 	}
 
 	@Override

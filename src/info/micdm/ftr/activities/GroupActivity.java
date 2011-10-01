@@ -11,7 +11,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,13 +59,20 @@ public class GroupActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
-
+		// Узнаем, что за группу надо показать:
 		Integer groupId = getIntent().getExtras().getInt("groupId");
-		Group group = Forum.getInstance().getGroup(groupId);
-		
+		final Group group = Forum.getInstance().getGroup(groupId);
+		// Заполняем заголовок:
 		TextView title = (TextView)findViewById(R.id.groupTitle);
 		title.setText(group.getTitle());
-
+		// При клике по "Обновить" перезагружаем список:
+		ImageButton reload = (ImageButton)findViewById(R.id.reloadGroup);
+		reload.setOnClickListener(new ImageButton.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				_showThemes(group);
+			}
+		});
 		_showThemes(group);
 	}
 	

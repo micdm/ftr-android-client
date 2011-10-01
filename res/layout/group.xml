@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	>
-	<TextView android:text="" android:layout_width="match_parent" android:id="@+id/groupTitle" android:layout_height="wrap_content"/>
+	android:layout_height="fill_parent">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:baselineAligned="true"
+		android:weightSum="1"
+		android:padding="5dip"
+		android:background="@android:drawable/dark_header">
+		<TextView
+			android:layout_width="wrap_content"
+			android:id="@+id/groupTitle"
+			android:layout_height="match_parent"
+			android:gravity="center_vertical"
+			android:layout_weight="1"
+			android:padding="3dip"
+			android:textStyle="bold"
+			android:maxLines="1"
+			android:ellipsize="end"
+			android:scrollHorizontally="true"/>
+		<ImageButton
+			android:id="@+id/reloadGroup"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_reload"
+			android:background="@android:color/transparent"/>
+	</LinearLayout>
 	<ListView
-	android:layout_width="fill_parent"
-	android:id="@+id/themes"
-	android:layout_height="wrap_content"/>
+		android:layout_width="fill_parent"
+		android:id="@+id/themes"
+		android:layout_height="wrap_content"/>
 </LinearLayout>

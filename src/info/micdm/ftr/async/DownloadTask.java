@@ -20,13 +20,13 @@ public abstract class DownloadTask<Params, Progress, Result> extends AsyncTask<P
 	/**
 	 * Возввращает адрес страницы для скачивания.
 	 */
-	protected abstract String _getUri();
+	protected abstract String _getUrn();
 	
 	/**
 	 * Скачивает страницу и возвращает ее тело.
 	 */
 	protected String _downloadPage() throws IOException {
-		String uri = _getUri();
+		String uri = "http://www3.forum.tomsk.ru/forum" + _getUrn();
 		Log.d(toString(), "downloading page " + uri);
 		AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
 		HttpGet request = new HttpGet(uri);

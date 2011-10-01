@@ -78,18 +78,14 @@ public class Group implements Comparable<Group> {
 	 * Возвращает темы внутри группы.
 	 */
 	public void getThemes(final Command command) {
-		if (_themes == null) {
-			DownloadGroupPageTask task = new DownloadGroupPageTask(_id) {
-				@Override
-				public void onPostExecute(ArrayList<Theme> themes) {
-					Log.d(toString(), themes.size() + " themes loaded");
-					_themes = themes;
-					command.callback(themes);
-				}
-			};
-			task.execute();
-		} else {
-			command.callback(_themes);
-		}
+		DownloadGroupPageTask task = new DownloadGroupPageTask(_id) {
+			@Override
+			public void onPostExecute(ArrayList<Theme> themes) {
+				Log.d(toString(), themes.size() + " themes loaded");
+				_themes = themes;
+				command.callback(themes);
+			}
+		};
+		task.execute();
 	}
 }

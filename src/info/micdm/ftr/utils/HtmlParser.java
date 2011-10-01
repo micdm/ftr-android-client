@@ -25,7 +25,7 @@ public abstract class HtmlParser {
 	 */
 	protected String _normalizeString(String source) {
 		String result = source.trim();
-		// TODO: удалять тэги
+		result = result.replaceAll("<a[^>]+>|</a>", "");
 		result = result.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&");
 		return result;
 	}

@@ -31,6 +31,8 @@ public class ThemeActivity extends ListActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		// TODO: добавить прогресс-диалог при загрузке + прогрессбар при подгрузке страниц (?)
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.theme);
 		

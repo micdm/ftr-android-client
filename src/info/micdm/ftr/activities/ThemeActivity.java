@@ -42,7 +42,7 @@ public class ThemeActivity extends ListActivity {
 		Integer themeId = extras.getInt("themeId");
 		
 		try {
-			Theme theme = Forum.getInstance().getGroup(groupId).getTheme(themeId);
+			Theme theme = Forum.INSTANCE.getGroup(groupId).getTheme(themeId);
 			theme.loadPage(0, new Theme.OnPageLoadedCommand() {
 				@Override
 				public void callback(ThemePage page) {

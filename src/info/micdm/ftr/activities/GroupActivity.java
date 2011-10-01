@@ -100,7 +100,7 @@ public class GroupActivity extends ListActivity {
 		setContentView(R.layout.group);
 
 		Integer groupId = getIntent().getExtras().getInt("groupId");
-		Group group = Forum.getInstance().getGroup(groupId);
+		Group group = Forum.INSTANCE.getGroup(groupId);
 
 		TextView title = (TextView)findViewById(R.id.groupTitle);
 		title.setText(group.getTitle());

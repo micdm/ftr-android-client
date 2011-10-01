@@ -24,7 +24,7 @@ public class ForumActivity extends ListActivity {
 	 * Заполняет список групп.
 	 */
 	protected void _setData() {
-		ArrayList<Group> groups = Forum.getInstance().getAllGroups();
+		ArrayList<Group> groups = Forum.INSTANCE.getAllGroups();
 		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(this, android.R.layout.simple_list_item_1, groups);
 		getListView().setAdapter(adapter);
 	}
@@ -64,5 +64,6 @@ public class ForumActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		_showGroups();
+		_onGroupSelected(Forum.INSTANCE.getGroup(0));
 	}
 }

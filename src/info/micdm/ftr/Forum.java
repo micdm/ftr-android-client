@@ -15,22 +15,15 @@ public class Forum {
 	/**
 	 * Синглтон.
 	 */
-	protected static Forum _instance;
+	public final static Forum INSTANCE = new Forum();
 	
 	/**
 	 * Список рубрик.
 	 */
 	protected HashMap<Integer, Group> _groups = new HashMap<Integer, Group>();
-	
-	/**
-	 * Синглтон.
-	 */
-	public static Forum getInstance() {
-		if (_instance == null) {
-			_instance = new Forum();
-			_instance._createGroups();
-		}
-		return _instance;
+
+	protected Forum() {
+		_createGroups();
 	}
 	
 	/**

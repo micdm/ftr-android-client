@@ -96,7 +96,7 @@ public class Group implements Comparable<Group> {
 			public void onPostExecute(ArrayList<Theme> themes) {
 				Log.d(toString(), themes.size() + " themes loaded");
 				for (Theme theme: themes) {
-					Group group = Forum.getInstance().getGroup(theme.getGroupId());
+					Group group = Forum.INSTANCE.getGroup(theme.getGroupId());
 					group.addTheme(theme);
 				}
 				command.callback(themes);

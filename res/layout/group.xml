@@ -31,6 +31,6 @@
 	</LinearLayout>
 	<ListView
 		android:layout_width="fill_parent"
-		android:id="@+id/themes"
+		android:id="@android:id/list"
 		android:layout_height="wrap_content"/>
 </LinearLayout>

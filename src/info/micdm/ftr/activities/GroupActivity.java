@@ -8,6 +8,7 @@ import info.micdm.ftr.Theme;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import android.widget.TextView;
  * @author Mic, 2011
  *
  */
-public class GroupActivity extends Activity {
+public class GroupActivity extends ListActivity {
 
 	/**
 	 * Диалог про загрузку списка тем.
@@ -35,8 +36,7 @@ public class GroupActivity extends Activity {
 	protected void _onThemesAvailable(ArrayList<Theme> themes) {
 		Log.d(toString(), themes.size() + " themes available");
 		ArrayAdapter<Theme> adapter = new ArrayAdapter<Theme>(this, R.layout.list_item, themes);
-		ListView list = (ListView)findViewById(R.id.themes);
-		list.setAdapter(adapter);
+		getListView().setAdapter(adapter);
 	}
 	
 	/**

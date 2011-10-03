@@ -26,7 +26,10 @@ public abstract class HtmlParser {
 	protected String _normalizeString(String source) {
 		String result = source.trim();
 		result = result.replaceAll("<a[^>]+>|</a>", "");
-		result = result.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&");
+		for (Integer i = 0; i < 2; i += 1) {
+			// Да-да, заменяем два раза:
+			result = result.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&");
+		}
 		return result;
 	}
 	

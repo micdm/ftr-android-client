@@ -90,6 +90,13 @@ public class Group implements Comparable<Group> {
 	 * Возвращает темы внутри группы.
 	 */
 	public void getThemes(final Command command) {
+//		ArrayList<Theme> themes = new ArrayList<Theme>();
+//		for (Integer i = 0; i < 5; i += 1) {
+//			themes.add(new Theme(_id, i, new Date(), "author" + i, "title" + i));
+//		}
+//		
+//		command.callback(themes);
+
 		DownloadGroupPageTask task = new DownloadGroupPageTask(_id) {
 			@Override
 			public void onPostExecute(ArrayList<Theme> themes) {

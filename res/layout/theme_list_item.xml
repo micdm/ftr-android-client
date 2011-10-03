@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="5dip">
+	
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		
+		<!-- Автор -->
+		<TextView
+			android:id="@+id/themeAuthor"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="Author"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:typeface="serif"/>
+
+		<!-- Дата последнего обновления -->
+		<TextView
+			android:id="@+id/themeUpdated"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="Updated"
+			android:textAppearance="@android:style/TextAppearance.Small"
+			android:typeface="serif"/>
+
+	</LinearLayout>
+	
+	<!-- Заголовок -->
+	<TextView
+		android:id="@+id/themeTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Title"
+		android:textAppearance="@android:style/TextAppearance.Medium"
+		android:typeface="serif"/>
+
+</LinearLayout>

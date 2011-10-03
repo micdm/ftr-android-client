@@ -27,7 +27,7 @@ public abstract class DownloadTask<Params, Progress, Result> extends AsyncTask<P
 	 * Скачивает страницу и возвращает ее тело.
 	 */
 	protected String _downloadPage() throws IOException {
-		String uri = "http://www3.forum.tomsk.ru/forum" + _getUrn();
+		String uri = "http://forum.tomsk.ru/forum" + _getUrn();
 		Log.debug("downloading page " + uri);
 		AndroidHttpClient client = AndroidHttpClient.newInstance("Android FTR Client");
 		HttpGet request = new HttpGet(uri);

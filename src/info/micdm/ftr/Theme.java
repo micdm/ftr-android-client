@@ -1,12 +1,11 @@
 package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadThemePageTask;
+import info.micdm.ftr.utils.DateUtils;
 import info.micdm.ftr.utils.Log;
 
 import java.util.Date;
 import java.util.HashMap;
-
-import android.text.format.DateUtils;
 
 /**
  * Класс темы.
@@ -68,8 +67,7 @@ public class Theme {
 
 	@Override
 	public String toString() {
-		String updated = DateUtils.getRelativeTimeSpanString(_updated.getTime()).toString();
-		return _author + ", " + updated + "\n" + getTitle();
+		return _author + ", " + getUpdatedAsString() + "\n" + getTitle();
 	}
 	
 	/**
@@ -84,6 +82,20 @@ public class Theme {
 	 */
 	public Integer getId() {
 		return _id;
+	}
+	
+	/**
+	 * Возвращает дату последнего обновления в виде человекопонятной строки.
+	 */
+	public String getUpdatedAsString() {
+		return DateUtils.getRelativeTimeAsString(_updated).toString();
+	}
+	
+	/**
+	 * Возвращает автора темы.
+	 */
+	public String getAuthor() {
+		return _author;
 	}
 	
 	/**

@@ -93,7 +93,7 @@ class ThemeListAdapter extends BaseAdapter {
 		}
 		Theme theme = (Theme)getItem(position);
 		holder.author.setText(theme.getAuthor());
-		holder.updated.setText(theme.getUpdatedAsString());
+		holder.updated.setText(", " + theme.getUpdatedAsString());
 		holder.title.setText(theme.getTitle());
 		return convertView;
 	}

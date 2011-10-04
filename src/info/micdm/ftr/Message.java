@@ -1,8 +1,9 @@
 package info.micdm.ftr;
 
+import info.micdm.ftr.utils.DateUtils;
+
 import java.util.Date;
 
-import android.text.format.DateUtils;
 
 /**
  * Отдельное сообщение.
@@ -39,7 +40,27 @@ public class Message {
 	}
 	
 	public String toString() {
-		String created = DateUtils.getRelativeTimeSpanString(_created.getTime()).toString();
-		return _author + ", " + created + "\n" + _body;
+		return _author + ", " + getCreatedAsString();
+	}
+	
+	/**
+	 * Возвращает дату последнего обновления в виде человекопонятной строки.
+	 */
+	public String getCreatedAsString() {
+		return DateUtils.getRelativeTimeAsString(_created).toString();
+	}
+	
+	/**
+	 * Возвращает имя автора сообщения.
+	 */
+	public String getAuthor() {
+		return _author;
+	}
+	
+	/**
+	 * Возвращает тело сообщения.
+	 */
+	public String getBody() {
+		return _body;
 	}
 }

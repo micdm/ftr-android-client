@@ -1,6 +1,7 @@
 package info.micdm.ftr.adapters;
 
 import info.micdm.ftr.Message;
+import info.micdm.ftr.R;
 
 import java.util.ArrayList;
 
@@ -22,26 +23,51 @@ public class ThemeAdapter extends ItemsAdapter {
 	 */
 	class ViewHolder implements AbstractViewHolder {
 		
+		/**
+		 * Поле с именем автора.
+		 */
 		TextView author;
 		
+		/**
+		 * Поле с датой добавления сообщения.
+		 */
 		TextView created;
 		
+		/**
+		 * Поле с телом сообщения.
+		 */
 		TextView body;
+		
+		/**
+		 * Записывает новые значения в кэш.
+		 */
+		public void update(Message message) {
+			author.setText(message.getAuthor());
+			created.setText(", " + message.getCreatedAsString());
+			body.setText(message.getBody());
+		}
 	}
 
 	public ThemeAdapter(Context context, ArrayList<Message> messages) {
 		super(context, messages);
 	}
+	
+	@Override
+	protected int _getItemLayoutId() {
+		return R.layout.message_list_item;
+	}
 
 	@Override
 	protected AbstractViewHolder _getNewViewHolder(View convertView) {
-		// TODO Auto-generated method stub
-		return null;
+		ViewHolder holder = new ViewHolder();
+		holder.author = (TextView)convertView.findViewById(R.id.messageAuthor);
+		holder.created = (TextView)convertView.findViewById(R.id.messageCreated);
+		holder.body = (TextView)convertView.findViewById(R.id.messageBody);
+		return holder;
 	}
 
 	@Override
 	protected void _updateViewHolder(AbstractViewHolder holder, Object item) {
-		// TODO Auto-generated method stub
-		
+		((ViewHolder)holder).update((Message)item);		
 	}
 }

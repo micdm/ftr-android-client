@@ -53,6 +53,11 @@ public class GroupAdapter extends ItemsAdapter {
 	}
 
 	@Override
+	protected int _getItemLayoutId() {
+		return R.layout.theme_list_item;
+	}
+
+	@Override
 	protected AbstractViewHolder _getNewViewHolder(View convertView) {
 		ViewHolder holder = new ViewHolder();
 		holder.author = (TextView)convertView.findViewById(R.id.themeAuthor);
@@ -65,6 +70,4 @@ public class GroupAdapter extends ItemsAdapter {
 	protected void _updateViewHolder(AbstractViewHolder holder, Object item) {
 		((ViewHolder)holder).update((Theme)item);
 	}
-
-	
 }

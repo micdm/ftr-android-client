@@ -1,7 +1,5 @@
 package info.micdm.ftr.adapters;
 
-import info.micdm.ftr.R;
-
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -63,6 +61,11 @@ public abstract class ItemsAdapter extends BaseAdapter {
 	}
 	
 	/**
+	 * Возвращает идентификатор разметки, которая будет использоваться для элементов списка.
+	 */
+	protected abstract int _getItemLayoutId();
+	
+	/**
 	 * Создает и возвращает новый кэш.
 	 */
 	protected abstract AbstractViewHolder _getNewViewHolder(View convertView);
@@ -78,7 +81,7 @@ public abstract class ItemsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		AbstractViewHolder holder;
 		if (convertView == null) {
-			convertView = _inflater.inflate(R.layout.theme_list_item, null);
+			convertView = _inflater.inflate(_getItemLayoutId(), null);
 			holder = _getNewViewHolder(convertView);
 			convertView.setTag(holder);
 		} else {

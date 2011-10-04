@@ -2,6 +2,7 @@ package info.micdm.ftr.activities;
 
 import info.micdm.ftr.Forum;
 import info.micdm.ftr.Group;
+import info.micdm.ftr.R;
 import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class ForumActivity extends ListActivity {
 	 */
 	protected void _setData() {
 		ArrayList<Group> groups = Forum.INSTANCE.getAllGroups();
-		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(this, android.R.layout.simple_list_item_1, groups);
+		ArrayAdapter<Group> adapter = new ArrayAdapter<Group>(this, R.layout.group_list_item, groups);
 		getListView().setAdapter(adapter);
 	}
 	
@@ -64,6 +65,6 @@ public class ForumActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		_showGroups();
-		_onGroupSelected(Forum.INSTANCE.getGroup(0));
+		//_onGroupSelected(Forum.INSTANCE.getGroup(0));
 	}
 }

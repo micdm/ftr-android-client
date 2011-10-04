@@ -13,11 +13,9 @@ import android.widget.TextView;
  * Экран со списком сообщений.
  * @author Mic, 2011
  *
- * TODO сделать красивые элементы списка
  */
 public class ThemeActivity extends ListActivity {
 
-	
 	/**
 	 * Вызывается, когда загрузилась очередная страница.
 	 */

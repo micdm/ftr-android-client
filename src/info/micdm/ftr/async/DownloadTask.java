@@ -9,17 +9,16 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.util.EntityUtils;
 
 import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
 
 /**
  * Абстрактный загрузчик страниц.
  * @author Mic, 2011
  *
  */
-public abstract class DownloadTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
+public abstract class DownloadTask<Progress, Result> extends Task<Progress, Result> {
 
 	/**
-	 * Возввращает адрес страницы для скачивания.
+	 * Возвращает адрес страницы для скачивания.
 	 */
 	protected abstract String _getUrn();
 	

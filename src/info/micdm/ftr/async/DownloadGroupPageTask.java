@@ -54,7 +54,7 @@ class GroupParser extends HtmlParser {
  * @author Mic, 2011
  * 
  */
-public class DownloadGroupPageTask extends DownloadTask<Void, Void, ArrayList<Theme>> {
+public class DownloadGroupPageTask extends DownloadTask<Void, ArrayList<Theme>> {
 
 	/**
 	 * Идентификатор группы, которую будем загружать.

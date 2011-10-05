@@ -90,7 +90,7 @@ class MessageParser extends HtmlParser {
  * @author Mic, 2011
  * 
  */
-public class DownloadThemePageTask extends DownloadTask<Void, Void, DownloadThemePageTask.Result> {
+public class DownloadThemePageTask extends DownloadTask<Void, DownloadThemePageTask.Result> {
 
 	/**
 	 * Результат загрузки.

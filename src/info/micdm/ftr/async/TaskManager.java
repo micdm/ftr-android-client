@@ -113,6 +113,13 @@ public class TaskManager {
 	}
 	
 	/**
+	 * Выполняет задачу.
+	 */
+	public void run(Task<?, ?> task, OnTaskFinished onFinished) {
+		run(task, onFinished, null);
+	}
+	
+	/**
 	 * Отсоединяется от задачи и возвращает ее.
 	 */
 	public Object retain() {

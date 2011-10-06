@@ -5,6 +5,7 @@ import info.micdm.ftr.Group;
 import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.adapters.GroupAdapter;
+import info.micdm.ftr.async.TaskManager;
 import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
@@ -26,10 +27,7 @@ import android.widget.TextView;
  */
 public class GroupActivity extends ListActivity {
 
-	/**
-	 * Диалог про загрузку списка тем.
-	 */
-	protected ProgressDialog _loadingThemesDialog = null;
+	protected TaskManager _taskManager;
 	
 	/**
 	 * Вызывается, когда будет доступен список тем.
@@ -45,14 +43,10 @@ public class GroupActivity extends ListActivity {
 	 * Отображает темы внутри группы.
 	 */
 	protected void _showThemes(Group group) {
-		_loadingThemesDialog = ProgressDialog.show(this, "", "Загружается список тем");
-		group.getThemes(new Group.Command() {
+		group.getThemes(_taskManager, new Group.OnThemesLoaded() {
 			@Override
 			public void callback(ArrayList<Theme> themes) {
 				_onThemesAvailable(themes);
-				if (_loadingThemesDialog != null) {
-					_loadingThemesDialog.dismiss();
-				}
 			}
 		});
 	}
@@ -98,6 +92,8 @@ public class GroupActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
+		
+		_taskManager = new TaskManager(this);
 
 		Integer groupId = getIntent().getExtras().getInt("groupId");
 		Group group = Forum.INSTANCE.getGroup(groupId);
@@ -108,14 +104,5 @@ public class GroupActivity extends ListActivity {
 		_listenForReload(group);
 		_listenForThemeSelected();
 		_showThemes(group);
-	}
-	
-	@Override
-	public void onDestroy() {
-		if (_loadingThemesDialog.isShowing()) {
-			_loadingThemesDialog.dismiss();
-			_loadingThemesDialog = null;
-		}
-		super.onDestroy();
 	}
 }

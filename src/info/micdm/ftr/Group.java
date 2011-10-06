@@ -1,6 +1,7 @@
 package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadGroupPageTask;
+import info.micdm.ftr.async.TaskManager;
 import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Group implements Comparable<Group> {
 	 * @author Mic, 2011
 	 * 
 	 */
-	public interface Command {
+	public interface OnThemesLoaded {
 		public void callback(ArrayList<Theme> themes);
 	}
 
@@ -89,26 +90,20 @@ public class Group implements Comparable<Group> {
 	/**
 	 * Возвращает темы внутри группы.
 	 */
-	public void getThemes(final Command command) {
-//		ArrayList<Theme> themes = new ArrayList<Theme>();
-//		for (Integer i = 0; i < 5; i += 1) {
-//			themes.add(new Theme(_id, i, new Date(), "author" + i, "title" + i));
-//		}
-//		
-//		command.callback(themes);
-
-		DownloadGroupPageTask task = new DownloadGroupPageTask(_id) {
+	public void getThemes(TaskManager taskManager, final OnThemesLoaded onThemesLoaded) {
+		DownloadGroupPageTask task = new DownloadGroupPageTask(_id);
+		taskManager.run(task, new TaskManager.OnTaskFinished() {
 			@Override
-			public void onPostExecute(ArrayList<Theme> themes) {
+			public void callback(Object result) {
+				ArrayList<Theme> themes = (ArrayList<Theme>)result;
 				Log.debug(themes.size() + " themes loaded");
 				for (Theme theme: themes) {
 					Group group = Forum.INSTANCE.getGroup(theme.getGroupId());
 					group.addTheme(theme);
 				}
-				command.callback(themes);
+				onThemesLoaded.callback(themes);
 			}
-		};
-		task.execute();
+		});
 	}
 	
 	public void addTheme(Theme theme) {

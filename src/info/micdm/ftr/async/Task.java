@@ -75,7 +75,6 @@ public abstract class Task<Progress, Result> extends AsyncTask<Void, Progress, R
 		_result = result;
 		if (_onFinished != null) {
 			_onFinished.callback(result);
-			setCallbacks(null, null);
 		}
 	}
 	
@@ -83,7 +82,6 @@ public abstract class Task<Progress, Result> extends AsyncTask<Void, Progress, R
 	protected void onCancelled() {
 		if (_onCancelled != null) {
 			_onCancelled.callback();
-			setCallbacks(null, null);
 		}
 	}
 }

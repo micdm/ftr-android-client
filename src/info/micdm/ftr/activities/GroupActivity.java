@@ -27,6 +27,9 @@ import android.widget.TextView;
  */
 public class GroupActivity extends ListActivity {
 
+	/**
+	 * Менеджер асинхронных задач.
+	 */
 	protected TaskManager _taskManager;
 	
 	/**

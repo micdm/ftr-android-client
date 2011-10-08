@@ -64,6 +64,14 @@ public class TaskManager {
 	}
 	
 	/**
+	 * Отсоединяет задачу и забывает про нее.
+	 */
+	protected void _disconnectTask() {
+		_task.setCallbacks(null, null);
+		_task = null;
+	}
+	
+	/**
 	 * Возвращает объект для обратного вызова при завершении задачи.
 	 */
 	protected Task.OnFinished _getOnFinishedCallback(final OnTaskFinished onFinished) {
@@ -71,11 +79,11 @@ public class TaskManager {
 			@Override
 			public void callback(Object result) {
 				Log.debug("task successfully finished");
+				_disconnectTask();
+				_dialog.dismiss();
 				if (onFinished != null) {
 					onFinished.callback(result);
 				}
-				_task = null;
-				_dialog.dismiss();
 			}
 		};
 	}
@@ -88,11 +96,11 @@ public class TaskManager {
 			@Override
 			public void callback() {
 				Log.debug("task cancelled");
+				_disconnectTask();
+				_dialog.dismiss();
 				if (onCancelled != null) {
 					onCancelled.callback();
 				}
-				_task = null;
-				_dialog.dismiss();
 			}
 		};
 	}
@@ -100,13 +108,14 @@ public class TaskManager {
 	/**
 	 * Выполняет задачу.
 	 */
-	public void run(Task<?, ?> task, OnTaskFinished onFinished, OnTaskCancelled onCancelled) {
+	public void run(String description, Task<?, ?> task, OnTaskFinished onFinished, OnTaskCancelled onCancelled) {
 		Log.debug("executing task " + task.toString());
 		if (_task != null) {
 			Log.warning("can't run the task, there is another one already");
 			return;
 		}
 		_task = task;
+		_dialog.setMessage(description);
 		_dialog.show();
 		task.setCallbacks(_getOnFinishedCallback(onFinished), _getOnCancelledCallback(onCancelled));
 		task.run();
@@ -115,8 +124,8 @@ public class TaskManager {
 	/**
 	 * Выполняет задачу.
 	 */
-	public void run(Task<?, ?> task, OnTaskFinished onFinished) {
-		run(task, onFinished, null);
+	public void run(String description, Task<?, ?> task, OnTaskFinished onFinished) {
+		run(description, task, onFinished, null);
 	}
 	
 	/**
@@ -127,8 +136,7 @@ public class TaskManager {
 			return null;
 		}
 		Task<?, ?> task = _task;
-		_task = null;
-		task.setCallbacks(null, null);
+		_disconnectTask();
 		return task;
 	}
 }

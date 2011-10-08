@@ -5,6 +5,7 @@ import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import info.micdm.ftr.adapters.ThemeAdapter;
+import info.micdm.ftr.async.TaskManager;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -16,6 +17,21 @@ import android.widget.TextView;
  */
 public class ThemeActivity extends ListActivity {
 
+	/**
+	 * Менеджер асинхронных задач.
+	 */
+	protected TaskManager _taskManager;
+	
+	/**
+	 * Определяет тему, которую надо загрузить.
+	 */
+	protected Theme _getTheme() {
+		Bundle extras = getIntent().getExtras();
+		Integer groupId = extras.getInt("groupId");
+		Integer themeId = extras.getInt("themeId");
+		return Forum.INSTANCE.getGroup(groupId).getTheme(themeId);
+	}
+	
 	/**
 	 * Вызывается, когда загрузилась очередная страница.
 	 */
@@ -30,17 +46,15 @@ public class ThemeActivity extends ListActivity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.theme);
-
-		Bundle extras = getIntent().getExtras();
-		Integer groupId = extras.getInt("groupId");
-		Integer themeId = extras.getInt("themeId");
 		
-		Theme theme = Forum.INSTANCE.getGroup(groupId).getTheme(themeId);
+		_taskManager = new TaskManager(this);
+
+		Theme theme = _getTheme();
 		
 		TextView title = (TextView)findViewById(R.id.themeTitle);
 		title.setText(theme.getTitle());
 		
-		theme.loadPage(0, new Theme.OnPageLoadedCommand() {
+		theme.loadPage(_taskManager, 0, new Theme.OnPageLoadedCommand() {
 			@Override
 			public void callback(ThemePage page) {
 				_onPageLoaded(page);

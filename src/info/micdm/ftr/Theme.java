@@ -1,6 +1,7 @@
 package info.micdm.ftr;
 
 import info.micdm.ftr.async.DownloadThemePageTask;
+import info.micdm.ftr.async.TaskManager;
 import info.micdm.ftr.utils.DateUtils;
 import info.micdm.ftr.utils.Log;
 
@@ -115,54 +116,55 @@ public class Theme {
 	/**
 	 * Загружает количество страниц.
 	 */
-	protected void _loadPageCount(final OnPageCountLoadedCommand onLoaded) {
+	protected void _loadPageCount(TaskManager taskManager, final OnPageCountLoadedCommand onLoaded) {
 		Log.debug("loading page count");
-		DownloadThemePageTask task = new DownloadThemePageTask(this, 0) {
+		DownloadThemePageTask task = new DownloadThemePageTask(this, 0);
+		taskManager.run("Загружается количество страниц", task, new TaskManager.OnTaskFinished() {
 			@Override
-			public void onPostExecute(Result result) {
-				_pageCount = result.getPageCount();
+			public void callback(Object result) {
+				DownloadThemePageTask.Result loaded = (DownloadThemePageTask.Result)result;
+				_pageCount = loaded.getPageCount();
 				Log.debug("page count loaded: " + _pageCount);
 				if (_pageCount == 1) {
-					_pages.put(0, result.getPage());
+					_pages.put(0, loaded.getPage());
 				}
 				onLoaded.callback(_pageCount);
 			}
-		};
-		task.execute();
+		});
 	}
-	
+
 	/**
 	 * Загружает страницу с указанным номером.
 	 */
-	protected void _loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
+	protected void _loadPage(TaskManager taskManager, Integer pageNumber, final OnPageLoadedCommand onLoaded) {
 		Log.debug("loading page #" + pageNumber);
-		DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber) {
+		DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber);
+		taskManager.run("Загружаются сообщения", task, new TaskManager.OnTaskFinished() {
 			@Override
-			public void onPostExecute(Result result) {
-				Log.debug("page #" + pageNumber + " loaded");
-				onLoaded.callback(result.getPage());
+			public void callback(Object result) {
+				DownloadThemePageTask.Result loaded = (DownloadThemePageTask.Result)result;
+				onLoaded.callback(loaded.getPage());
 			}
-		};
-		task.execute();
+		});
 	}
 	
 	/**
 	 * Загружает одну страницу и делает обратный вызов.
 	 */
-	public void loadPage(final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
+	public void loadPage(final TaskManager taskManager, final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
 		if (_pageCount == null) {
-			_loadPageCount(new OnPageCountLoadedCommand() {
+			_loadPageCount(taskManager, new OnPageCountLoadedCommand() {
 				@Override
 				public void callback(Integer pageCount) {
 					if (pageCount == 1) {
 						onLoaded.callback(_pages.get(0));
 					} else {
-						_loadPage(pageNumber, onLoaded);
+						_loadPage(taskManager, pageNumber, onLoaded);
 					}
 				}
 			});
 		} else {
-			_loadPage(pageNumber, onLoaded);
+			_loadPage(taskManager, pageNumber, onLoaded);
 		}
 	}
 }

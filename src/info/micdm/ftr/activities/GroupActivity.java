@@ -5,13 +5,10 @@ import info.micdm.ftr.Group;
 import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.adapters.GroupAdapter;
-import info.micdm.ftr.async.TaskManager;
 import info.micdm.ftr.utils.Log;
 
 import java.util.ArrayList;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,12 +22,7 @@ import android.widget.TextView;
  * @author Mic, 2011
  *
  */
-public class GroupActivity extends ListActivity {
-
-	/**
-	 * Менеджер асинхронных задач.
-	 */
-	protected TaskManager _taskManager;
+public class GroupActivity extends Activity {
 	
 	/**
 	 * Вызывается, когда будет доступен список тем.
@@ -95,8 +87,6 @@ public class GroupActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.group);
-		
-		_taskManager = new TaskManager(this);
 
 		Integer groupId = getIntent().getExtras().getInt("groupId");
 		Group group = Forum.INSTANCE.getGroup(groupId);

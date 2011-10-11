@@ -5,8 +5,6 @@ import info.micdm.ftr.R;
 import info.micdm.ftr.Theme;
 import info.micdm.ftr.ThemePage;
 import info.micdm.ftr.adapters.ThemeAdapter;
-import info.micdm.ftr.async.TaskManager;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -15,12 +13,7 @@ import android.widget.TextView;
  * @author Mic, 2011
  *
  */
-public class ThemeActivity extends ListActivity {
-
-	/**
-	 * Менеджер асинхронных задач.
-	 */
-	protected TaskManager _taskManager;
+public class ThemeActivity extends Activity {
 	
 	/**
 	 * Определяет тему, которую надо загрузить.
@@ -42,12 +35,8 @@ public class ThemeActivity extends ListActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO: добавить прогресс-диалог при загрузке + прогрессбар при подгрузке страниц (?)
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.theme);
-		
-		_taskManager = new TaskManager(this);
 
 		Theme theme = _getTheme();
 		

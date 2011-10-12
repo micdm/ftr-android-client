@@ -52,6 +52,10 @@ public class ThemeAdapter extends ItemsAdapter {
 		super(context, messages);
 	}
 	
+	public ThemeAdapter(Context context) {
+		super(context, null);
+	}
+	
 	@Override
 	protected int _getItemLayoutId() {
 		return R.layout.message_list_item;

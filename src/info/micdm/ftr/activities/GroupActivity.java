@@ -22,7 +22,7 @@ import android.widget.TextView;
  * @author Mic, 2011
  *
  */
-public class GroupActivity extends Activity {
+public class GroupActivity extends TaskActivity {
 	
 	/**
 	 * Вызывается, когда будет доступен список тем.

@@ -5,11 +5,11 @@ import android.app.ListActivity;
 import android.os.Bundle;
 
 /**
- * Базовый класс для экранов.
+ * Базовый класс для экранов, на которых выполняются фоновые задачи
  * @author Mic, 2011
  *
  */
-public abstract class Activity extends ListActivity {
+public abstract class TaskActivity extends ListActivity {
 
 	/**
 	 * Менеджер асинхронных задач.

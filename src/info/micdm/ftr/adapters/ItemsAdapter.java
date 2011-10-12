@@ -1,6 +1,7 @@
 package info.micdm.ftr.adapters;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,13 +43,15 @@ public abstract class ItemsAdapter extends BaseAdapter {
 	/**
 	 * Возвращает количество элементов.
 	 */
+	@Override
 	public int getCount() {
-		return _items.size();
+		return (_items == null) ? 0 : _items.size();
 	}
 	
 	/**
 	 * Возвращает элемент в указанной позиции.
 	 */
+	@Override
 	public Object getItem(int position) {
 		return _items.get(position);
 	}
@@ -56,6 +59,7 @@ public abstract class ItemsAdapter extends BaseAdapter {
 	/**
 	 * Возвращает идентификатор элемента в указанной позиции.
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -78,6 +82,7 @@ public abstract class ItemsAdapter extends BaseAdapter {
 	/**
 	 * Возвращает заполненный элемент списка.
 	 */
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		AbstractViewHolder holder;
 		if (convertView == null) {
@@ -89,5 +94,17 @@ public abstract class ItemsAdapter extends BaseAdapter {
 		}
 		_updateViewHolder(holder, getItem(position));
 		return convertView;
+	}
+	
+	/**
+	 * Добавляет элементы в список.
+	 */
+	public void addItems(ArrayList<?> items) {
+		if (_items == null) {
+			_items = items;
+		} else {
+			_items.addAll((Collection)items);
+		}
+		notifyDataSetChanged();
 	}
 }

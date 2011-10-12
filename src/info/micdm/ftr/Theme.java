@@ -5,8 +5,8 @@ import info.micdm.ftr.async.TaskManager;
 import info.micdm.ftr.utils.DateUtils;
 import info.micdm.ftr.utils.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Класс темы.
@@ -56,7 +56,7 @@ public class Theme {
 	/**
 	 * Загруженные страницы.
 	 */
-	protected HashMap<Integer, ThemePage> _pages = new HashMap<Integer, ThemePage>();
+	protected ArrayList<ThemePage> _pages = new ArrayList<ThemePage>();
 	
 	public Theme(Integer groupId, Integer id, Date updated, String author, String title) {
 		_groupId = groupId;
@@ -126,7 +126,7 @@ public class Theme {
 				_pageCount = loaded.getPageCount();
 				Log.debug("page count loaded: " + _pageCount);
 				if (_pageCount == 1) {
-					_pages.put(0, loaded.getPage());
+					_pages.add(loaded.getPage());
 				}
 				onLoaded.callback(_pageCount);
 			}
@@ -143,15 +143,18 @@ public class Theme {
 			@Override
 			public void callback(Object result) {
 				DownloadThemePageTask.Result loaded = (DownloadThemePageTask.Result)result;
-				onLoaded.callback(loaded.getPage());
+				_pageCount = loaded.getPageCount();
+				ThemePage page = loaded.getPage();
+				_pages.add(page);
+				onLoaded.callback(page);
 			}
 		});
 	}
 	
 	/**
-	 * Загружает одну страницу и делает обратный вызов.
+	 * Загружает первую страницу.
 	 */
-	public void loadPage(final TaskManager taskManager, final Integer pageNumber, final OnPageLoadedCommand onLoaded) {
+	public void loadFirstPage(final TaskManager taskManager, final OnPageLoadedCommand onLoaded) {
 		if (_pageCount == null) {
 			_loadPageCount(taskManager, new OnPageCountLoadedCommand() {
 				@Override
@@ -159,12 +162,22 @@ public class Theme {
 					if (pageCount == 1) {
 						onLoaded.callback(_pages.get(0));
 					} else {
-						_loadPage(taskManager, pageNumber, onLoaded);
+						_loadPage(taskManager, 0, onLoaded);
 					}
 				}
 			});
 		} else {
-			_loadPage(taskManager, pageNumber, onLoaded);
+			_loadPage(taskManager, 0, onLoaded);
+		}
+	}
+	
+	/**
+	 * Загружает следующую страницу.
+	 */
+	public void loadNextPage(final TaskManager taskManager, final OnPageLoadedCommand onLoaded) {
+		Integer nextPageNumber = _pages.size();
+		if (nextPageNumber < _pageCount) {
+			_loadPage(taskManager, nextPageNumber, onLoaded);
 		}
 	}
 }

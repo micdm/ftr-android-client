@@ -51,7 +51,7 @@ public class TaskManager {
 	protected void _setupProgressDialog(Context context) {
 		_dialog = new ProgressDialog(context);
 		_dialog.setMessage("Loading");
-		_dialog.setCancelable(true);
+		_dialog.setCancelable(false);
 		_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {

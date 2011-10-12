@@ -61,7 +61,8 @@ public class DownloadGroupPageTask extends DownloadTask<Void, ArrayList<Theme>> 
 	 */
 	protected Integer _groupId;
 
-	public DownloadGroupPageTask(Integer groupId) {
+	public DownloadGroupPageTask(String description, Integer groupId) {
+		super(description);
 		_groupId = groupId;
 	}
 	

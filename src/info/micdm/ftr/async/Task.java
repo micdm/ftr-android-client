@@ -28,6 +28,11 @@ public abstract class Task<Progress, Result> extends AsyncTask<Void, Progress, R
 	}
 	
 	/**
+	 * Описание задачи.
+	 */
+	protected String _description;
+	
+	/**
 	 * Тут должен быть результат работы.
 	 */
 	protected Result _result;
@@ -41,6 +46,17 @@ public abstract class Task<Progress, Result> extends AsyncTask<Void, Progress, R
 	 * Выполнится при отмене задачи
 	 */
 	protected OnCancelled _onCancelled;
+	
+	public Task(String description) {
+		_description = description;
+	}
+	
+	/**
+	 * Возвращает описание задачи.
+	 */
+	public String getDescription() {
+		return _description;
+	}
 	
 	/**
 	 * Задает объекты для обратного вызова.

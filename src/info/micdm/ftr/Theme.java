@@ -118,8 +118,8 @@ public class Theme {
 	 */
 	protected void _loadPageCount(TaskManager taskManager, final OnPageCountLoadedCommand onLoaded) {
 		Log.debug("loading page count");
-		DownloadThemePageTask task = new DownloadThemePageTask(this, 0);
-		taskManager.run("Загружается количество страниц", task, new TaskManager.OnTaskFinished() {
+		DownloadThemePageTask task = new DownloadThemePageTask("Загружается количество страниц", this, 0);
+		taskManager.run(task, new TaskManager.OnTaskFinished() {
 			@Override
 			public void callback(Object result) {
 				DownloadThemePageTask.Result loaded = (DownloadThemePageTask.Result)result;
@@ -138,8 +138,8 @@ public class Theme {
 	 */
 	protected void _loadPage(TaskManager taskManager, Integer pageNumber, final OnPageLoadedCommand onLoaded) {
 		Log.debug("loading page #" + pageNumber);
-		DownloadThemePageTask task = new DownloadThemePageTask(this, pageNumber);
-		taskManager.run("Загружаются сообщения", task, new TaskManager.OnTaskFinished() {
+		DownloadThemePageTask task = new DownloadThemePageTask("Загружаются сообщения", this, pageNumber);
+		taskManager.run(task, new TaskManager.OnTaskFinished() {
 			@Override
 			public void callback(Object result) {
 				DownloadThemePageTask.Result loaded = (DownloadThemePageTask.Result)result;

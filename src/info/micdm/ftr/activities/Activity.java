@@ -15,23 +15,17 @@ public abstract class Activity extends ListActivity {
 	 * Менеджер асинхронных задач.
 	 */
 	protected TaskManager _taskManager;
-	
-	protected void _setupTaskManager() {
-		_taskManager = new TaskManager(this);
-		Object task = getLastNonConfigurationInstance();
-		if (task != null) {
-			//_taskManager.run(task, onFinished);
-		}
-	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_setupTaskManager();
+		_taskManager = new TaskManager(this);
 	}
 	
 	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return _taskManager.retain();
+	public void onDestroy() {
+		super.onDestroy();
+		_taskManager.cancel();
+		_taskManager = null;
 	}
 }

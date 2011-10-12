@@ -90,8 +90,8 @@ public class Group implements Comparable<Group> {
 	 * Возвращает темы внутри группы.
 	 */
 	public void getThemes(TaskManager taskManager, final OnThemesLoaded onThemesLoaded) {
-		DownloadGroupPageTask task = new DownloadGroupPageTask(_id);
-		taskManager.run("Загружается список тем", task, new TaskManager.OnTaskFinished() {
+		DownloadGroupPageTask task = new DownloadGroupPageTask("Загружается список тем", _id);
+		taskManager.run(task, new TaskManager.OnTaskFinished() {
 			@Override
 			public void callback(Object result) {
 				ArrayList<Theme> themes = (ArrayList<Theme>)result;

@@ -17,6 +17,10 @@ import android.net.http.AndroidHttpClient;
  */
 public abstract class DownloadTask<Progress, Result> extends Task<Progress, Result> {
 
+	public DownloadTask(String description) {
+		super(description);
+	}
+	
 	/**
 	 * Возвращает адрес страницы для скачивания.
 	 */

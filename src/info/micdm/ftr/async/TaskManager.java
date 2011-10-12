@@ -108,14 +108,14 @@ public class TaskManager {
 	/**
 	 * Выполняет задачу.
 	 */
-	public void run(String description, Task<?, ?> task, OnTaskFinished onFinished, OnTaskCancelled onCancelled) {
+	public void run(Task task, OnTaskFinished onFinished, OnTaskCancelled onCancelled) {
 		Log.debug("executing task " + task.toString());
 		if (_task != null) {
 			Log.warning("can't run the task, there is another one already");
 			return;
 		}
 		_task = task;
-		_dialog.setMessage(description);
+		_dialog.setMessage(task.getDescription());
 		_dialog.show();
 		task.setCallbacks(_getOnFinishedCallback(onFinished), _getOnCancelledCallback(onCancelled));
 		task.run();
@@ -124,19 +124,16 @@ public class TaskManager {
 	/**
 	 * Выполняет задачу.
 	 */
-	public void run(String description, Task<?, ?> task, OnTaskFinished onFinished) {
-		run(description, task, onFinished, null);
+	public void run(Task task, OnTaskFinished onFinished) {
+		run(task, onFinished, null);
 	}
 	
 	/**
-	 * Отсоединяется от задачи и возвращает ее.
+	 * Отменяет задачу, если она выполняется.
 	 */
-	public Object retain() {
-		if (_task == null) {
-			return null;
+	public void cancel() {
+		if (_task != null) {
+			_disconnectTask();
 		}
-		Task<?, ?> task = _task;
-		_disconnectTask();
-		return task;
 	}
 }

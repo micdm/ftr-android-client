@@ -139,7 +139,8 @@ public class DownloadThemePageTask extends DownloadTask<Void, DownloadThemePageT
 	 */
 	protected Integer _pageNumber;
 	
-	public DownloadThemePageTask(Theme theme, Integer pageNumber) {
+	public DownloadThemePageTask(String description, Theme theme, Integer pageNumber) {
+		super(description);
 		_theme = theme;
 		_pageNumber = pageNumber;
 	}

@@ -56,7 +56,7 @@ public class Theme {
 	/**
 	 * Загруженные страницы.
 	 */
-	protected ArrayList<ThemePage> _pages = new ArrayList<ThemePage>();
+	protected ArrayList<ThemePage> _pages;
 	
 	public Theme(Integer groupId, Integer id, Date updated, String author, String title) {
 		_groupId = groupId;
@@ -155,6 +155,7 @@ public class Theme {
 	 * Загружает первую страницу.
 	 */
 	public void loadFirstPage(final TaskManager taskManager, final OnPageLoadedCommand onLoaded) {
+		_pages = new ArrayList<ThemePage>();
 		if (_pageCount == null) {
 			_loadPageCount(taskManager, new OnPageCountLoadedCommand() {
 				@Override

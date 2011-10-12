@@ -138,7 +138,7 @@ public class Theme {
 	 */
 	protected void _loadPage(TaskManager taskManager, Integer pageNumber, final OnPageLoadedCommand onLoaded) {
 		Log.debug("loading page #" + pageNumber);
-		DownloadThemePageTask task = new DownloadThemePageTask("Загружаются сообщения", this, pageNumber);
+		DownloadThemePageTask task = new DownloadThemePageTask("Загружается страница №" + (pageNumber + 1), this, pageNumber);
 		taskManager.run(task, new TaskManager.OnTaskFinished() {
 			@Override
 			public void callback(Object result) {

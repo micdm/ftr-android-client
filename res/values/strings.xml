@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FTR Android Client</string>
+    <string name="app_name">FTR Client</string>
+    <string name="app_description">A read-only client for the forum http://forum.tomsk.ru</string>
 </resources>
